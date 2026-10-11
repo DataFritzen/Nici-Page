@@ -59,6 +59,22 @@
     .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 76px; }
     .brand { display: flex; align-items: center; gap: 18px; text-decoration: none; }
     .brand svg { width: 48px; height: 48px; color: var(--cream); flex: none; }
+    /* Logo zeichnet sich ein: erst der Kreis, dann N, dann R mit ausschwingendem Bein */
+    .logo-anim path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: logo-draw var(--dur, .7s) ease-in-out var(--delay, 0s) forwards; }
+    .logo-anim .d1 { --dur: 1.6s; --delay: .2s; }
+    .logo-anim .d2 { --dur: 1.2s; --delay: .6s; }
+    .logo-anim .d3 { --dur: .45s; --delay: 1.3s; }
+    .logo-anim .d4 { --dur: .5s;  --delay: 1.7s; }
+    .logo-anim .d5 { --dur: .45s; --delay: 2.15s; }
+    .logo-anim .d6 { --dur: .6s;  --delay: 2.5s; }
+    .logo-anim .d7 { --dur: .9s;  --delay: 3s; }
+    @keyframes logo-draw { to { stroke-dashoffset: 0; } }
+    .brand-name, .brand-sub { opacity: 0; animation: brand-in 1.2s ease 1.4s forwards; }
+    @keyframes brand-in { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-anim path { animation: none; stroke-dashoffset: 0; }
+      .brand-name, .brand-sub { animation: none; opacity: 1; }
+    }
     .brand-name { font-size: 17px; letter-spacing: .2em; line-height: 1.2; }
     .brand-sub { font-size: 10px; letter-spacing: .2em; opacity: .8; }
     .nav-cta { padding: 9px 18px; font-size: 13px; flex: none; }
@@ -251,7 +267,16 @@
   <header class="site-header">
     <div class="wrap nav">
       <a class="brand" href="#start" aria-label="Nicole Ried – zum Seitenanfang">
-        <svg><use href="#logo-nr"/></svg>
+        <!-- Logo direkt eingebettet, damit es sich beim Laden einzeichnen kann -->
+        <svg class="logo-anim" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path class="d1" pathLength="1" stroke="url(#gold)" stroke-width="2.4" d="M88 94A46 46 0 1 1 104 52"/>
+          <path class="d2" pathLength="1" stroke="url(#gold)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 99 40"/>
+          <path class="d3" pathLength="1" stroke="currentColor" stroke-width="1.1" d="M36 81V41"/>
+          <path class="d4" pathLength="1" stroke="currentColor" stroke-width="2.8" d="M36.5 41 61.5 81"/>
+          <path class="d5" pathLength="1" stroke="currentColor" stroke-width="1.1" d="M62 81V41"/>
+          <path class="d6" pathLength="1" stroke="currentColor" stroke-width="1.8" d="M62 41h7a10 10 0 0 1 0 20h-7"/>
+          <path class="d7" pathLength="1" stroke="url(#gold)" stroke-width="2.2" d="M67 61c5 9 11 19 24 24 5 2 10 2 14 0"/>
+        </g></svg>
         <span>
           <span class="brand-name">NICOLE RIED</span><br>
           <span class="brand-sub">COACHING · MEDIATION · ZIELERREICHUNG</span>
