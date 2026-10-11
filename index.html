@@ -84,33 +84,38 @@
     /* Leuchtender Weg; Koordinaten in Prozent der Videofläche */
     .hero-path {
       position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
-      filter: drop-shadow(0 0 3px rgba(255,225,160,.95)) drop-shadow(0 0 10px rgba(255,185,80,.6));
-      clip-path: inset(0 100% 0 0); animation: draw-path 2.4s ease-out .3s forwards;
+      filter: drop-shadow(0 0 3px rgba(255,236,190,1)) drop-shadow(0 0 10px rgba(255,190,80,.9)) drop-shadow(0 0 26px rgba(255,160,50,.55));
     }
-    .hero-path path { fill: none; stroke: #fff3d6; stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-    @keyframes draw-path { to { clip-path: inset(0 0 0 0); } }
+    /* Linie zeichnet sich in 6 s gleichmäßig ein; die Punkte leuchten auf, wenn sie erreicht werden */
+    .hero-path path {
+      fill: none; stroke: #fff6e0; stroke-width: .5; stroke-linecap: round;
+      stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-path 6s linear .4s forwards;
+    }
+    @keyframes draw-path { to { stroke-dashoffset: 0; } }
     .hero-claims { position: absolute; inset: 0; z-index: 2; list-style: none; margin: 0; padding: 0; }
     .hero-claims li {
       position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%);
       display: flex; align-items: center; gap: 16px; transform: translate(-5px, -50%);
-      font-size: clamp(12px, 1.1vw, 16px); font-weight: 400; letter-spacing: .22em; text-transform: uppercase;
+      font-size: clamp(12px, 1.1vw, 16px); font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
       color: #fff8ea; text-shadow: 0 1px 14px rgba(0,0,0,.6); white-space: nowrap;
       opacity: 0; animation: claim-in .9s ease forwards;
     }
     .hero-claims li::before {
-      content: ""; width: 10px; height: 10px; border-radius: 50%; flex: none; background: #fffaf0;
-      box-shadow: 0 0 6px 2px rgba(255,222,150,.95), 0 0 20px 7px rgba(255,185,80,.5);
+      content: ""; width: 13px; height: 13px; border-radius: 50%; flex: none; background: #fffaf0;
+      box-shadow: 0 0 8px 3px rgba(255,228,160,1), 0 0 22px 9px rgba(255,185,70,.75), 0 0 44px 16px rgba(255,160,50,.35);
+      animation: dot-pulse 3.2s ease-in-out infinite alternate;
     }
-    .hero-claims li:nth-child(1) { --x: 57; --y: 30; animation-delay: 2.3s; }
-    .hero-claims li:nth-child(2) { --x: 56.5; --y: 41; animation-delay: 1.9s; }
-    .hero-claims li:nth-child(3) { --x: 54; --y: 52; animation-delay: 1.5s; }
+    @keyframes dot-pulse { from { transform: scale(1); } to { transform: scale(1.25); } }
+    .hero-claims li:nth-child(1) { --x: 57; --y: 30; animation-delay: 5.8s; }
+    .hero-claims li:nth-child(2) { --x: 56.5; --y: 41; animation-delay: 5.1s; }
+    .hero-claims li:nth-child(3) { --x: 54; --y: 52; animation-delay: 4.5s; }
     @keyframes claim-in { to { opacity: 1; } }
     @media (min-width: 821px) and (max-width: 1100px) {
       .hero-claims li { font-size: 11px; letter-spacing: .14em; gap: 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero-path { animation: none; clip-path: none; }
-      .hero-claims li { animation: none; opacity: 1; }
+      .hero-path path { animation: none; stroke-dashoffset: 0; }
+      .hero-claims li, .hero-claims li::before { animation: none; opacity: 1; }
     }
 
     /* Offers */
@@ -272,7 +277,7 @@
             <source src="assets/video/hero-yoga.mp4" type="video/mp4">
           </video>
           <svg class="hero-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M8 102C18 94 28 86 36 80 42 75 47 70 50 64 53 58 53 56 54 52 55 47 56.5 44 56.5 41 56.5 37 56.5 33 57 30 57.5 26 58.5 23 60 20"/>
+            <path pathLength="1" d="M8 102C18 94 28 86 36 80 42 75 47 70 50 64 53 58 53 56 54 52 55 47 56.5 44 56.5 41 56.5 37 56.5 33 57 30 57.5 26 58.5 23 60 20"/>
           </svg>
           <ul class="hero-claims">
             <li>Konflikte klären</li>
