@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logo NR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#151513; --cream:#f4efe4; --sage:#c3c8a2; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0e0e0d; color: var(--cream); font: 300 16px/1.6 Inter, sans-serif; padding: 40px 16px 80px; }
+    h1 { font: 600 30px "Playfair Display", serif; text-align: center; margin: 0 0 6px; }
+    .intro { text-align: center; opacity: .7; margin: 0 auto 36px; max-width: 60ch; }
+    .grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; }
+    .card { background: var(--ink); border: 1px solid #2a2a26; border-radius: 8px; overflow: hidden; }
+    .num { text-align: center; letter-spacing: .3em; font-size: 12px; opacity: .7; padding-top: 28px; }
+    .title { text-align: center; letter-spacing: .3em; font-size: 13px; opacity: .85; }
+    .lockup { text-align: center; padding: 24px 16px 32px; }
+    .lockup svg { width: 190px; height: 170px; }
+    .lockup .name { font-size: 28px; letter-spacing: .3em; margin-top: 8px; }
+    .lockup .sub { font-size: 11px; letter-spacing: .25em; opacity: .8; white-space: nowrap; }
+    .row { display: flex; align-items: center; justify-content: space-around; gap: 16px; padding: 20px; border-top: 1px solid #2a2a26; flex-wrap: wrap; }
+    .row figure { margin: 0; text-align: center; font-size: 11px; opacity: .85; }
+    .row .light { background: var(--cream); color: var(--ink); border-radius: 6px; padding: 10px 14px; }
+    .header-demo { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-top: 1px solid #2a2a26; }
+    .header-demo svg { width: 46px; height: 42px; flex: none; }
+    .header-demo .n { font-size: 15px; letter-spacing: .2em; line-height: 1.25; }
+    .header-demo .s { font-size: 9px; letter-spacing: .2em; opacity: .8; white-space: nowrap; }
+    .note { padding: 16px 24px 22px; border-top: 1px solid #2a2a26; font-size: 14px; opacity: .8; }
+  </style>
+</head>
+<body>
+  <h1>Logo NR – Ausarbeitung</h1>
+  <p class="intro">Die beiden Richtungen aus deiner Vorlage als echte Vektor-Logos: gestochen scharf in jeder Größe, einsetzbar auf Website, Flyer und als Browser-Symbol.</p>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="10" y1="110" x2="110" y2="10">
+        <stop offset="0" stop-color="#a87b3f"/>
+        <stop offset=".55" stop-color="#e2c48f"/>
+        <stop offset="1" stop-color="#f7ecd6"/>
+      </linearGradient>
+      <linearGradient id="sage" gradientUnits="userSpaceOnUse" x1="10" y1="110" x2="110" y2="10">
+        <stop offset="0" stop-color="#7f8a5a"/>
+        <stop offset="1" stop-color="#dfe3c6"/>
+      </linearGradient>
+    </defs>
+
+    <!-- 02 Balance Circle -->
+    <symbol id="balance" viewBox="0 0 120 120">
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Kreis wie ein Pinselstrich: Hauptbogen + feiner, versetzter Begleitbogen -->
+        <path style="stroke: var(--accent)" stroke-width="2.4" d="M88 94A46 46 0 1 1 104 52"/>
+        <path style="stroke: var(--accent)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 99 40"/>
+        <!-- N -->
+        <path stroke="currentColor" stroke-width="1.1" d="M36 41v40M62 81V41"/>
+        <path stroke="currentColor" stroke-width="2.8" d="M36.5 41 61.5 81"/>
+        <!-- R teilt sich den Stamm mit dem N, Bein schwingt aus dem Kreis -->
+        <path stroke="currentColor" stroke-width="1.8" d="M62 41h7a10 10 0 0 1 0 20h-7"/>
+        <path style="stroke: var(--accent)" stroke-width="2.2" d="M67 61c5 9 11 19 24 24 5 2 10 2 14 0"/>
+      </g>
+    </symbol>
+
+    <!-- 03 Path to Growth -->
+    <symbol id="growth" viewBox="0 0 120 110">
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- N -->
+        <path stroke="currentColor" stroke-width="1.1" d="M24 30v52M56 82V30"/>
+        <path stroke="currentColor" stroke-width="2.8" d="M24.5 30 55.5 82"/>
+        <!-- R -->
+        <path stroke="currentColor" stroke-width="1.8" d="M56 30h8a11 11 0 0 1 0 22h-8"/>
+        <path stroke="currentColor" stroke-width="2.4" d="M62 52 92 84"/>
+        <!-- Weg, der durch die Buchstaben nach oben führt -->
+        <path style="fill: var(--accent)" stroke="none" d="M12 96C34 92 52 84 60 68 66 56 72 46 85 35 74 47 69 58 63.5 70 54 87 36 95 12 96Z"/>
+      </g>
+      <!-- Stern -->
+      <path style="fill: var(--accent)" d="M92 10c1 7 2.5 9 9 10-6.5 1-8 3-9 10-1-7-2.5-9-9-10 6.5-1 8-3 9-10Z"/>
+    </symbol>
+  </svg>
+
+  <div class="grid">
+    <div class="card" style="--accent: url(#gold)">
+      <div class="num">02</div><div class="title">BALANCE CIRCLE</div>
+      <div class="lockup">
+        <svg><use href="#balance"/></svg>
+        <div class="name">NICOLE RIED</div>
+        <div class="sub">COACHING · MEDIATION · ZIELERREICHUNG</div>
+      </div>
+      <div class="header-demo"><svg><use href="#balance"/></svg><div><div class="n">NICOLE RIED</div><div class="s">COACHING · MEDIATION · ZIELERREICHUNG</div></div></div>
+      <div class="row">
+        <figure><svg width="64" height="64"><use href="#balance"/></svg><br>64 px</figure>
+        <figure><svg width="32" height="32"><use href="#balance"/></svg><br>Browser-Tab</figure>
+        <figure class="light" style="--accent: url(#gold)"><svg width="64" height="64"><use href="#balance"/></svg><br>auf Creme</figure>
+        <figure style="--accent: url(#sage)"><svg width="64" height="64"><use href="#balance"/></svg><br>in Salbei</figure>
+      </div>
+      <div class="note"><strong>Balance Circle:</strong> Der Kreis steht für Ruhe und Balance, das Bein des R schwingt aus dem Kreis hinaus – Wachstum über die eigenen Grenzen.</div>
+    </div>
+
+    <div class="card" style="--accent: url(#gold)">
+      <div class="num">03</div><div class="title">PATH TO GROWTH</div>
+      <div class="lockup">
+        <svg><use href="#growth"/></svg>
+        <div class="name">NICOLE RIED</div>
+        <div class="sub">COACHING · MEDIATION · ZIELERREICHUNG</div>
+      </div>
+      <div class="header-demo"><svg><use href="#growth"/></svg><div><div class="n">NICOLE RIED</div><div class="s">COACHING · MEDIATION · ZIELERREICHUNG</div></div></div>
+      <div class="row">
+        <figure><svg width="64" height="64"><use href="#growth"/></svg><br>64 px</figure>
+        <figure><svg width="32" height="32"><use href="#growth"/></svg><br>Browser-Tab</figure>
+        <figure class="light"><svg width="64" height="64"><use href="#growth"/></svg><br>auf Creme</figure>
+        <figure style="--accent: url(#sage)"><svg width="64" height="64"><use href="#growth"/></svg><br>in Salbei</figure>
+      </div>
+      <div class="note"><strong>Path to Growth:</strong> Ein Weg führt durch die Initialen nach oben zum Stern – „Diesmal packst du es“ als Bild.</div>
+    </div>
+  </div>
+</body>
+</html>
