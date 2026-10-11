@@ -145,6 +145,14 @@
     .site-footer a { text-decoration: none; }
     .site-footer a:hover { color: var(--cream); }
 
+    /* Schreibmaschine im Hero */
+    .typing .ch { opacity: 0; }
+    .typing .ch.on { opacity: 1; }
+    .caret { display: inline-block; width: 0; height: .85em; margin-left: .04em; border-left: 2px solid var(--sage); vertical-align: -.05em; animation: blink .9s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .typing-after { opacity: 0; transform: translateY(10px); transition: opacity .8s ease, transform .8s ease; }
+    .typing-after.in { opacity: 1; transform: none; }
+
     /* Reveal */
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
     .reveal.in { opacity: 1; transform: none; }
@@ -306,6 +314,53 @@
   </footer>
 
   <script>
+    // Schreibmaschine: Kicker und Überschrift tippen, danach Text und Button einblenden
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const targets = [document.querySelector('.hero-kicker'), document.querySelector('.hero h1')];
+      const after = [document.querySelector('.hero-lead'), document.querySelector('.hero-text .btn').parentElement];
+      const queue = [];
+      targets.forEach((el, i) => {
+        el.setAttribute('aria-label', el.textContent);
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(node => {
+          const frag = document.createDocumentFragment();
+          for (const c of node.textContent) {
+            const span = document.createElement('span');
+            span.className = 'ch';
+            span.setAttribute('aria-hidden', 'true');
+            span.textContent = c;
+            frag.appendChild(span);
+            queue.push({ span, pauseBefore: 0 });
+          }
+          node.replaceWith(frag);
+        });
+        el.classList.add('typing');
+        if (i > 0) queue[queue.length - el.querySelectorAll('.ch').length].pauseBefore = 500;
+      });
+      after.forEach(el => el.classList.add('typing-after'));
+
+      const caret = document.createElement('span');
+      caret.className = 'caret';
+      caret.setAttribute('aria-hidden', 'true');
+      let i = 0;
+      function step() {
+        if (i >= queue.length) {
+          after.forEach((el, k) => setTimeout(() => el.classList.add('in'), 200 + k * 250));
+          setTimeout(() => caret.remove(), 2200);
+          return;
+        }
+        const { span } = queue[i++];
+        span.classList.add('on');
+        span.after(caret);
+        const next = queue[i];
+        setTimeout(step, next && next.pauseBefore ? next.pauseBefore : (span.textContent === ' ' ? 40 : 70 + Math.random() * 50));
+      }
+      setTimeout(step, 400);
+    })();
+
     // Sanftes Einblenden
     const reveal = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); reveal.unobserve(en.target); } });
