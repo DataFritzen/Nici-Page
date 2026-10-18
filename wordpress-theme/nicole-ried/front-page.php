@@ -32,8 +32,7 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 			<div class="hero-media">
 				<!-- Hintergrundvideo: Mixkit „Silhouette of the mountain and the sunrise“ (Mixkit Stock Video Free License) -->
 				<video class="hero-video" muted playsinline preload="auto" aria-hidden="true" src="<?php echo esc_url( get_theme_file_uri( 'assets/video/hero-berg.mp4' ) ); ?>"></video>
-				<div class="hero-overcast"></div>
-				<canvas class="hero-rain" aria-hidden="true"></canvas>
+				<div class="hero-dawn"></div>
 				<div class="hero-sunglow"></div>
 				<!-- Lichtweg in Video-Koordinaten (1280 × 720): steigt den dunklen Berghang hinauf bis zum Gipfel -->
 				<svg class="hero-path" aria-hidden="true"><g>

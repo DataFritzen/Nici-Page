@@ -75,8 +75,13 @@
       .logo-anim path { animation: none; stroke-dashoffset: 0; }
       .brand-name, .brand-sub { animation: none; opacity: 1; }
     }
-    .brand-name { font-size: 17px; letter-spacing: .2em; line-height: 1.2; }
-    .brand-sub { font-size: 10px; letter-spacing: .2em; opacity: .8; }
+    /* Name und Unterzeile als Schriftzug: die Unterzeile ist exakt so breit wie der Name */
+    .brand-text { display: inline-grid; line-height: 1.15; }
+    .brand-name { font-size: 17px; letter-spacing: .2em; margin-right: -.2em; }
+    .brand-sub {
+      width: 0; min-width: 100%; margin-top: 4px; white-space: nowrap;
+      font-size: 7px; letter-spacing: .07em; text-align: justify; text-align-last: justify; opacity: .75;
+    }
     .nav-cta { padding: 9px 18px; font-size: 13px; flex: none; }
 
     /* Hero: links Text, rechts Video mit Lichtweg */
@@ -93,12 +98,12 @@
       position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%;
       background: var(--ink);
     }
-    /* Wetter, Lichtweg und Begriffe werden per Skript an die Videozeit gekoppelt (siehe unten) */
-    .hero-overcast {
+    /* Morgengrauen, Lichtweg und Begriffe werden per Skript an die Videozeit gekoppelt */
+    .hero-dawn {
       position: absolute; inset: 0; pointer-events: none; opacity: 0;
-      background: linear-gradient(180deg, rgba(88,98,110,.55) 0%, rgba(52,58,66,.45) 55%, rgba(30,33,38,.55) 100%);
+      background: linear-gradient(180deg, rgba(38,52,82,.55) 0%, rgba(30,38,60,.4) 50%, rgba(14,18,30,.5) 100%);
+      mix-blend-mode: multiply;
     }
-    .hero-rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
     .hero-sunglow {
       position: absolute; inset: 0; pointer-events: none; opacity: 0;
       background: radial-gradient(circle at var(--sun-x, 50%) var(--sun-y, 25%), rgba(255,200,110,.4), rgba(255,170,70,.1) 35%, transparent 60%);
@@ -206,7 +211,6 @@
       .offer-grid { grid-template-columns: 1fr; gap: 48px; }
       .offer + .offer { border-left: 0; border-top: 1px solid var(--cream-2); padding-top: 48px; }
       .about-grid, .contact-grid { grid-template-columns: 1fr; }
-      .brand-sub { font-size: 8.5px; letter-spacing: .14em; }
     }
     @media (max-width: 480px) {
       body { font-size: 16px; }
@@ -214,7 +218,7 @@
       .hero-media { margin: 0 -16px; height: 400px; }
       .hero-claims { inset: auto 16px 64px; }
       .brand-name { font-size: 14px; }
-      .brand-sub, .brand br { display: none; }   /* auf dem Handy reicht der Platz nicht */
+      .brand-sub { font-size: 5.9px; margin-top: 3px; }
       .brand { gap: 12px; }
       .brand svg { width: 38px; height: 38px; }
       .nav-cta { padding: 8px 14px; font-size: 12px; gap: 8px; }
@@ -257,8 +261,8 @@
           <path class="d6" pathLength="1" stroke="currentColor" stroke-width="1.8" d="M62 41h7a10 10 0 0 1 0 20h-7"/>
           <path class="d7" pathLength="1" stroke="url(#gold)" stroke-width="2.2" d="M67 61c5 9 11 19 24 24 5 2 10 2 14 0"/>
         </g></svg>
-        <span>
-          <span class="brand-name">NICOLE RIED</span><br>
+        <span class="brand-text">
+          <span class="brand-name">NICOLE RIED</span>
           <span class="brand-sub">COACHING · MEDIATION · RESILIENZ</span>
         </span>
       </a>
@@ -277,8 +281,7 @@
         <div class="hero-media">
           <!-- Hintergrundvideo: Mixkit „Silhouette of the mountain and the sunrise“ (Mixkit Stock Video Free License) -->
           <video class="hero-video" muted playsinline preload="auto" aria-hidden="true" src="assets/video/hero-berg.mp4"></video>
-          <div class="hero-overcast"></div>
-          <canvas class="hero-rain" aria-hidden="true"></canvas>
+          <div class="hero-dawn"></div>
           <div class="hero-sunglow"></div>
           <!-- Lichtweg in Video-Koordinaten (1280 × 720): steigt den dunklen Berghang hinauf bis zum Gipfel -->
           <svg class="hero-path" aria-hidden="true"><g>
@@ -358,15 +361,13 @@
   </footer>
 
   <script>
-    // Hero: Alles hängt an der Videozeit – Regen, Aufklaren, Sonnenglühen, Lichtweg und Begriffe.
-    // Das Video startet nach dem Wolkensturm, läuft in halber Geschwindigkeit einmal durch und bleibt am Ende stehen.
+    // Hero: Alles hängt an der Videozeit – Morgengrauen, Sonnenaufgang, Lichtweg und Begriffe.
+    // Nach rund 4 Sekunden steht das Bild komplett; das Video läuft danach ruhig weiter und bleibt am Ende stehen.
     (function () {
       const media = document.querySelector('.hero-media');
       if (!media) return;   // Unterseiten ohne Hero
       const video = media.querySelector('.hero-video');
-      const canvas = media.querySelector('.hero-rain');
-      const ctx = canvas.getContext('2d');
-      const overcast = media.querySelector('.hero-overcast');
+      const dawn = media.querySelector('.hero-dawn');
       const sunglow = media.querySelector('.hero-sunglow');
       const path = media.querySelector('.hero-path path');
       const claims = [...media.querySelectorAll('.hero-claims li')];
@@ -374,10 +375,10 @@
 
       // Zeitplan in Sekunden Videozeit
       const T = {
-        start: 4.0,                 // vorher ziehen die wilden Wolken über den Berg
-        rate: .5,                   // halbe Geschwindigkeit: ruhiger, kein Zeitraffer-Gefühl
-        rainEnd: 4.6, clearEnd: 6.0,  // bis 4,6 s Regen, bis 6,0 s klart es auf
-        pathStart: 5.0, pathEnd: 8.6  // startet mit dem Sonnenaufgang, nach gut 7 Sekunden fertig
+        start: 4.4,                   // vorher ziehen die wilden Wolken über den Berg
+        rate: .6,                     // etwas verlangsamt: ruhig, aber kein Warten
+        dawnEnd: 4.7, sunrise: 5.6,   // kurz Morgengrauen, dann wärmt das Licht bis zum Sonnenaufgang auf
+        pathStart: 5.0, pathEnd: 6.8  // Lichtweg ab ca. 1 s, nach ca. 4 s stehen alle drei Begriffe
       };
       // Punkte in Video-Koordinaten, von unten nach oben: Konflikte klären, Innerlich wachsen, Ziele erreichen
       const VIDEO = { w: 1280, h: 720, posX: .3, posY: .5 };   // muss zu object-position: 30% 50% passen
@@ -414,65 +415,13 @@
       const clamp = x => Math.min(1, Math.max(0, x));
       const ease = x => x * x * (3 - 2 * x);
 
-      // Regen als Canvas: drei Tiefenebenen, Böen, auslaufende Schweife und Spritzer am Boden
-      const LAYERS = [   // fern → nah
-        { share: .5,  len: [6, 12],  speed: [5, 7],   width: .6, alpha: [.10, .22] },
-        { share: .35, len: [14, 24], speed: [9, 12],  width: .9, alpha: [.18, .32] },
-        { share: .15, len: [28, 46], speed: [16, 22], width: 1.4, alpha: [.22, .40] }
-      ];
-      const rnd = (a, b) => a + Math.random() * (b - a);
-      let drops = [], splashes = [], w = 0, h = 0, wind = .18, frameNo = 0;
-      function resize() {
-        const r = media.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
-        w = r.width; h = r.height;
-        canvas.width = w * dpr; canvas.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const total = Math.round(w * h / 1400);
-        drops = [];
-        LAYERS.forEach(L => { for (let i = 0; i < total * L.share; i++) drops.push(newDrop(L, true)); });
-      }
-      function newDrop(L, anywhere) {
-        return { L, x: rnd(-40, w + 120), y: anywhere ? rnd(-50, h) : rnd(-60, -10),
-                 len: rnd(...L.len), speed: rnd(...L.speed), a: rnd(...L.alpha),
-                 ground: h * rnd(.72, 1.02) };   // nahe Tropfen treffen weiter unten auf
-      }
-      function drawRain(intensity) {
-        ctx.clearRect(0, 0, w, h);
-        if (intensity <= 0) { splashes = []; return; }
-        frameNo++;
-        wind = .16 + Math.sin(frameNo / 90) * .06;   // leichte Böen
-        ctx.lineCap = 'round';
-        for (const d of drops) {
-          const dx = d.len * wind, a = d.a * intensity;
-          // Schweif blass, Kopf etwas heller – wirkt wie Bewegungsunschärfe
-          ctx.lineWidth = d.L.width;
-          ctx.strokeStyle = 'rgba(205,215,228,' + (a * .45) + ')';
-          ctx.beginPath(); ctx.moveTo(d.x + dx, d.y - d.len); ctx.lineTo(d.x + dx * .4, d.y - d.len * .4); ctx.stroke();
-          ctx.strokeStyle = 'rgba(225,232,242,' + a + ')';
-          ctx.beginPath(); ctx.moveTo(d.x + dx * .4, d.y - d.len * .4); ctx.lineTo(d.x, d.y); ctx.stroke();
-          d.x -= d.speed * wind; d.y += d.speed;
-          if (d.y > d.ground) {
-            if (d.L.width > .8 && Math.random() < .5) splashes.push({ x: d.x, y: d.y, r: 0, a: a * 1.4 });
-            Object.assign(d, newDrop(d.L, false));
-          }
-        }
-        // Spritzer: kleine, flache Ringe, die sich ausbreiten und verblassen
-        ctx.lineWidth = .8;
-        splashes = splashes.filter(s => (s.r += .45, s.a *= .9) > .02);
-        for (const s of splashes) {
-          ctx.strokeStyle = 'rgba(220,228,238,' + s.a + ')';
-          ctx.beginPath(); ctx.ellipse(s.x, s.y, s.r * 2.2, s.r * .55, 0, Math.PI, 2 * Math.PI); ctx.stroke();
-        }
-      }
-
       function render(t) {
-        const storm = 1 - ease(clamp((t - T.rainEnd) / (T.clearEnd - T.rainEnd)));   // 1 = Regen, 0 = Sonne
-        video.style.filter = storm > 0
-          ? `grayscale(${.6 * storm}) saturate(${1 - .5 * storm}) brightness(${1 - .4 * storm}) contrast(${1 - .12 * storm}) blur(${.8 * storm}px)`
+        const night = 1 - ease(clamp((t - T.dawnEnd) / (T.sunrise - T.dawnEnd)));   // 1 = Morgengrauen, 0 = Sonne
+        video.style.filter = night > 0
+          ? `saturate(${1 - .65 * night}) brightness(${1 - .5 * night}) contrast(${1 + .05 * night})`
           : '';
-        overcast.style.opacity = storm;
-        sunglow.style.opacity = ease(clamp((t - T.pathStart) / 1.6));
-        drawRain(storm);
+        dawn.style.opacity = night;
+        sunglow.style.opacity = ease(clamp((t - T.pathStart) / 1.2));
         const p = clamp((t - T.pathStart) / (T.pathEnd - T.pathStart));
         path.style.strokeDashoffset = 1 - p;
         claims.forEach((li, i) => li.classList.toggle('on', p >= claimAt[i]));
@@ -485,7 +434,6 @@
       }
 
       function start() {
-        resize();
         if (reduceMotion) { video.currentTime = video.duration - .1; render(T.pathEnd); return; }
         video.currentTime = T.start;
         video.playbackRate = T.rate;
@@ -493,7 +441,7 @@
         video.play().then(() => { raf = requestAnimationFrame(loop); }).catch(() => render(T.pathEnd));
       }
       video.addEventListener('ended', () => render(T.pathEnd));   // letztes Bild bleibt stehen
-      addEventListener('resize', () => { resize(); layout(); });
+      addEventListener('resize', layout);
       layout();
       if (video.readyState >= 1) start(); else video.addEventListener('loadedmetadata', start, { once: true });
     })();

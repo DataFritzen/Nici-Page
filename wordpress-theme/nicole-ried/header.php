@@ -38,8 +38,8 @@ $cta  = is_front_page() ? '#kontakt' : home_url( '/#kontakt' );
 				<path class="d6" pathLength="1" stroke="currentColor" stroke-width="1.8" d="M62 41h7a10 10 0 0 1 0 20h-7"/>
 				<path class="d7" pathLength="1" stroke="url(#gold)" stroke-width="2.2" d="M67 61c5 9 11 19 24 24 5 2 10 2 14 0"/>
 			</g></svg>
-			<span>
-				<span class="brand-name">NICOLE RIED</span><br>
+			<span class="brand-text">
+				<span class="brand-name">NICOLE RIED</span>
 				<span class="brand-sub"><?php echo esc_html( nr( 'brand_sub' ) ); ?></span>
 			</span>
 		</a>
