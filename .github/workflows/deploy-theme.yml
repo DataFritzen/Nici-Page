@@ -1,9 +1,9 @@
 # Lädt das WordPress-Theme bei jedem Push auf main per SFTP zu IONOS hoch.
 # Benötigte Repository-Secrets (GitHub → Settings → Secrets and variables → Actions):
-#   SFTP_HOST      z. B. access-1234567890.webspace-host.com
+#   SFTP_HOST      Server aus IONOS → Hosting → SFTP & SSH
 #   SFTP_USER      SFTP-Benutzername aus dem IONOS-Kundenbereich
 #   SFTP_PASSWORD  zugehöriges Passwort
-#   SFTP_PATH      Zielordner des Themes, z. B. /wp-content/themes/nicole-ried
+#   SFTP_PATH      Zielordner des Themes, bei IONOS: /public/wp-content/themes/nicole-ried
 name: Theme zu WordPress hochladen
 
 on:
@@ -38,8 +38,8 @@ jobs:
         run: |
           # Sicherung: Weil --delete im Zielordner aufräumt, darf nur der Theme-Ordner das Ziel sein
           case "$SFTP_PATH" in
-            */wp-content/themes/nicole-ried) ;;
-            *) echo "::error::SFTP_PATH muss auf /wp-content/themes/nicole-ried enden (ist: $SFTP_PATH)"; exit 1 ;;
+            */themes/nicole-ried) ;;
+            *) echo "::error::SFTP_PATH muss auf /themes/nicole-ried enden (ist: $SFTP_PATH)"; exit 1 ;;
           esac
           lftp -u "$SFTP_USER,$SFTP_PASSWORD" "sftp://$SFTP_HOST" -e "
             set sftp:auto-confirm yes;
