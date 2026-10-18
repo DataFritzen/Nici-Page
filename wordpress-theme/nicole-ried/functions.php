@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.2.0' );
+define( 'NR_VERSION', '1.2.1' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -64,7 +64,7 @@ function nr_defaults() {
 
 		'hero_kicker'      => '',
 		'hero_title'       => 'Keinen Bock<br><em>auf</em> Stress?',
-		'hero_lead'        => 'Mit Yoga, Achtsamkeit und neuen Perspektiven <strong>zeige ich dir, wie es geht</strong> – Schritt für Schritt, auf deinem ganz persönlichen Weg.',
+		'hero_lead'        => '',
 		'hero_button'      => 'Einfach mal drüber reden',
 		'hero_claim_1'     => 'Konflikte klären',
 		'hero_claim_2'     => 'Innerlich wachsen',
@@ -157,7 +157,7 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 
 		array( 'hero_kicker', 'nr_hero', 'Kleine Zeile über der Überschrift (leer = ausgeblendet)', 'text' ),
 		array( 'hero_title', 'nr_hero', 'Überschrift', 'html' ),
-		array( 'hero_lead', 'nr_hero', 'Text unter der Überschrift (<strong>…</strong> = grün hervorgehoben)', 'html' ),
+		array( 'hero_lead', 'nr_hero', 'Text unter der Überschrift (leer = ausgeblendet, <strong>…</strong> = grün hervorgehoben)', 'html' ),
 		array( 'hero_button', 'nr_hero', 'Button', 'text' ),
 		array( 'hero_claim_1', 'nr_hero', 'Begriff am Berg – unten', 'text' ),
 		array( 'hero_claim_2', 'nr_hero', 'Begriff am Berg – Mitte', 'text' ),
