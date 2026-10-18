@@ -89,7 +89,24 @@
     .hero h1 em { font-style: italic; }
     .hero-lead { max-width: 38ch; font-size: 18px; opacity: .85; margin: -12px 0 36px; }
     .hero-media { position: relative; overflow: hidden; margin-right: calc((var(--page-w, 100vw) - min(var(--page-w, 100vw), var(--max))) / -2 - 24px); }
-    .hero-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 78% center; background: var(--ink); }
+    .hero-media video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--video-pos, center);
+      background: var(--ink); transition: filter 4s ease-in-out;
+    }
+    /* Wetter: erst Regen (kühl, dunkel, entsättigt), dann klart es zu warmem Sonnenlicht auf */
+    .hero-media.is-rain video { filter: grayscale(.7) saturate(.45) brightness(.55) contrast(.92); transition: none; }
+    .hero-overcast {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 4s ease-in-out;
+      background: linear-gradient(180deg, rgba(62,74,90,.7), rgba(34,40,50,.55));
+    }
+    .hero-media.is-rain .hero-overcast { opacity: 1; transition: none; }
+    .hero-rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hero-sunglow {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 3.5s ease;
+      background: radial-gradient(circle at var(--sun-x, 50%) var(--sun-y, 25%), rgba(255,200,110,.45), rgba(255,170,70,.12) 35%, transparent 60%);
+      mix-blend-mode: screen;
+    }
+    .hero-media.is-sunny .hero-sunglow { opacity: 1; }
     /* Weicher Übergang zur Textseite und leichte Abdunklung unten */
     .hero-media::after {
       content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -105,8 +122,9 @@
     /* Linie zeichnet sich in 6 s gleichmäßig ein; die Punkte leuchten auf, wenn sie erreicht werden */
     .hero-path path {
       fill: none; stroke: #fff6e0; stroke-width: .5; stroke-linecap: round;
-      stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-path 6s linear .4s forwards;
+      stroke-dasharray: 1; stroke-dashoffset: 1;
     }
+    .is-sunny .hero-path path { animation: draw-path 5s linear 1.2s forwards; }
     @keyframes draw-path { to { stroke-dashoffset: 0; } }
     .hero-claims { position: absolute; inset: 0; z-index: 2; list-style: none; margin: 0; padding: 0; }
     .hero-claims li {
@@ -114,25 +132,40 @@
       display: flex; align-items: center; gap: 16px; transform: translate(-5px, -50%);
       font-size: clamp(12px, 1.1vw, 16px); font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
       color: #fff8ea; text-shadow: 0 1px 14px rgba(0,0,0,.6); white-space: nowrap;
-      opacity: 0; animation: claim-in .9s ease forwards;
+      opacity: 0;
     }
+    .is-sunny .hero-claims li { animation: claim-in .9s ease forwards; }
     .hero-claims li::before {
       content: ""; width: 13px; height: 13px; border-radius: 50%; flex: none; background: #fffaf0;
       box-shadow: 0 0 8px 3px rgba(255,228,160,1), 0 0 22px 9px rgba(255,185,70,.75), 0 0 44px 16px rgba(255,160,50,.35);
       animation: dot-pulse 3.2s ease-in-out infinite alternate;
     }
     @keyframes dot-pulse { from { transform: scale(1); } to { transform: scale(1.25); } }
-    .hero-claims li:nth-child(1) { --x: 57; --y: 30; animation-delay: 5.8s; }
-    .hero-claims li:nth-child(2) { --x: 56.5; --y: 41; animation-delay: 5.1s; }
-    .hero-claims li:nth-child(3) { --x: 54; --y: 52; animation-delay: 4.5s; }
+    .hero-claims li:nth-child(1) { --x: 57; --y: 30; animation-delay: 5.7s; }
+    .hero-claims li:nth-child(2) { --x: 56.5; --y: 41; animation-delay: 5.15s; }
+    .hero-claims li:nth-child(3) { --x: 54; --y: 52; animation-delay: 4.6s; }
     @keyframes claim-in { to { opacity: 1; } }
     @media (min-width: 821px) and (max-width: 1100px) {
       .hero-claims li { font-size: 11px; letter-spacing: .14em; gap: 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero-path path { animation: none; stroke-dashoffset: 0; }
-      .hero-claims li, .hero-claims li::before { animation: none; opacity: 1; }
+      .hero-path path, .is-sunny .hero-path path { animation: none; stroke-dashoffset: 0; }
+      .hero-claims li, .is-sunny .hero-claims li, .hero-claims li::before { animation: none; opacity: 1; }
+      .hero-media video, .hero-overcast, .hero-sunglow { transition: none; }
     }
+
+    /* Vergleichsschalter für die Hero-Videos – vor dem Livegang entfernen */
+    .video-switch {
+      position: fixed; right: 12px; top: 88px; z-index: 100; display: flex; gap: 4px; align-items: center;
+      padding: 6px; border-radius: 999px; background: rgba(21,21,19,.88); color: var(--cream);
+      font: 400 12px var(--sans); box-shadow: 0 4px 18px rgba(0,0,0,.3);
+    }
+    .video-switch span { padding: 0 8px; opacity: .7; }
+    .video-switch button {
+      border: 0; border-radius: 999px; padding: 7px 14px; cursor: pointer;
+      background: transparent; color: var(--cream); font: inherit;
+    }
+    .video-switch button[aria-pressed="true"] { background: var(--sage); color: var(--ink); }
 
     /* Offers */
     .offers { padding: 72px 0; }
@@ -195,14 +228,6 @@
     .site-footer a { text-decoration: none; }
     .site-footer a:hover { color: var(--cream); }
 
-    /* Schreibmaschine im Hero */
-    .typing .ch { opacity: 0; }
-    .typing .ch.on { opacity: 1; }
-    .caret { display: inline-block; width: 0; height: .85em; margin-left: .04em; border-left: 2px solid var(--sage); vertical-align: -.05em; animation: blink .9s steps(1) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    .typing-after { opacity: 0; transform: translateY(10px); transition: opacity .8s ease, transform .8s ease; }
-    .typing-after.in { opacity: 1; transform: none; }
-
     /* Reveal */
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
     .reveal.in { opacity: 1; transform: none; }
@@ -220,6 +245,10 @@
       .hero-path { display: none; }
       .hero-claims { inset: auto 24px 72px; display: grid; gap: 12px; }
       .hero-claims li { position: static; transform: none; font-size: 12.5px; letter-spacing: .2em; }
+      /* ohne Lichtweg erscheinen die Begriffe direkt nach dem Aufklaren */
+      .hero-claims li:nth-child(1) { animation-delay: .4s; }
+      .hero-claims li:nth-child(2) { animation-delay: .8s; }
+      .hero-claims li:nth-child(3) { animation-delay: 1.2s; }
       .hero-text { padding: 8px 0 56px; margin-top: -40px; }
       .offer-grid { grid-template-columns: 1fr; gap: 48px; }
       .offer + .offer { border-left: 0; border-top: 1px solid var(--cream-2); padding-top: 48px; }
@@ -297,10 +326,12 @@
           <div><a class="btn btn-sage" href="#kontakt">Einfach mal drüber reden <svg><use href="#i-arrow"/></svg></a></div>
         </div>
         <div class="hero-media">
-          <!-- Hintergrundvideo: Mixkit „Silhouette of a woman doing yoga at sunset“ (Mixkit Stock Video Free License) -->
-          <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-            <source src="assets/video/hero-yoga.mp4" type="video/mp4">
-          </video>
+          <!-- Hintergrundvideos (Mixkit Stock Video Free License):
+               A „Silhouette of the mountain and the sunrise“, B „Set of plateaus seen from the heights in a sunset“ -->
+          <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+          <div class="hero-overcast"></div>
+          <canvas class="hero-rain" aria-hidden="true"></canvas>
+          <div class="hero-sunglow"></div>
           <svg class="hero-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <path pathLength="1" d="M8 102C18 94 28 86 36 80 42 75 47 70 50 64 53 58 53 56 54 52 55 47 56.5 44 56.5 41 56.5 37 56.5 33 57 30 57.5 26 58.5 23 60 20"/>
           </svg>
@@ -384,6 +415,13 @@
     </section>
   </main>
 
+  <!-- Vergleichsschalter für die Hero-Videos – vor dem Livegang entfernen -->
+  <div class="video-switch" role="group" aria-label="Hero-Video wählen">
+    <span>Video</span>
+    <button type="button" data-video="a">A · Berg</button>
+    <button type="button" data-video="b">B · Hochebene</button>
+  </div>
+
   <footer class="site-footer">
     <div class="wrap">
       <span>© <span id="year">2026</span> Nicole Ried</span>
@@ -392,60 +430,79 @@
   </footer>
 
   <script>
-    // Schreibmaschine: Kicker und Überschrift tippen, danach Text und Button einblenden
+    // Hero: Video wählen, dann Wetterumschwung von Regen zu Sonne abspielen
     (function () {
-      const kicker = document.querySelector('.hero-kicker');
-      const title = document.querySelector('.hero h1');
-      const lead = document.querySelector('.hero-lead');
-      const heroButton = document.querySelector('.hero-text .btn');
-      if (!kicker || !title || !lead || !heroButton) return;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { document.querySelector('.hero-video')?.pause(); return; }
-      const targets = [kicker, title];
-      const after = [lead, heroButton.parentElement];
-      const queue = [];
-      targets.forEach((el, i) => {
-        el.setAttribute('aria-label', el.textContent);
-        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-        const nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(node => {
-          const frag = document.createDocumentFragment();
-          for (const c of node.textContent) {
-            const span = document.createElement('span');
-            span.className = 'ch';
-            span.setAttribute('aria-hidden', 'true');
-            span.textContent = c;
-            frag.appendChild(span);
-            queue.push({ span, pauseBefore: 0 });
-          }
-          node.replaceWith(frag);
-        });
-        el.classList.add('typing');
-        if (i > 0) queue[queue.length - el.querySelectorAll('.ch').length].pauseBefore = 500;
-      });
-      after.forEach(el => el.classList.add('typing-after'));
+      const media = document.querySelector('.hero-media');
+      const video = media.querySelector('.hero-video');
+      const canvas = media.querySelector('.hero-rain');
+      const ctx = canvas.getContext('2d');
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const videos = {
+        a: { src: 'assets/video/hero-berg.mp4', pos: '50% center', sunX: '55%', sunY: '35%' },
+        b: { src: 'assets/video/hero-plateaus.mp4', pos: '20% center', sunX: '20%', sunY: '20%' }
+      };
 
-      const caret = document.createElement('span');
-      caret.className = 'caret';
-      caret.setAttribute('aria-hidden', 'true');
-      let i = 0;
-      function step() {
-        if (i >= queue.length) {
-          after.forEach((el, k) => setTimeout(() => el.classList.add('in'), 200 + k * 250));
-          setTimeout(() => caret.remove(), 2200);
-          return;
-        }
-        const { span } = queue[i++];
-        span.classList.add('on');
-        span.after(caret);
-        const next = queue[i];
-        setTimeout(step, next && next.pauseBefore ? next.pauseBefore : (span.textContent === ' ' ? 40 : 70 + Math.random() * 50));
+      // Regen als Canvas-Animation; die Stärke sinkt beim Aufklaren auf null
+      let drops = [], intensity = 0, fadeStart = 0, fadeDur = 0, raf = 0;
+      function resize() {
+        const r = media.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drops = Array.from({ length: Math.round(r.width * r.height / 2600) }, () => newDrop(r, true));
       }
-      setTimeout(step, 400);
-    })();
+      function newDrop(r, anywhere) {
+        return { x: Math.random() * (r.width + 100), y: anywhere ? Math.random() * r.height : -30,
+                 len: 12 + Math.random() * 20, speed: 9 + Math.random() * 8, a: .15 + Math.random() * .35 };
+      }
+      function frame(t) {
+        const r = media.getBoundingClientRect();
+        if (fadeDur) intensity = Math.max(0, 1 - (t - fadeStart) / fadeDur);
+        ctx.clearRect(0, 0, r.width, r.height);
+        ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+        for (const d of drops) {
+          ctx.strokeStyle = 'rgba(210,222,235,' + (d.a * intensity) + ')';
+          ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * .22, d.y + d.len); ctx.stroke();
+          d.x -= d.speed * .22; d.y += d.speed;
+          if (d.y > r.height) Object.assign(d, newDrop(r, false));
+        }
+        if (intensity > 0) raf = requestAnimationFrame(frame); else ctx.clearRect(0, 0, r.width, r.height);
+      }
 
-    // Bei reduzierter Bewegung das Hintergrundvideo anhalten
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelector('.hero-video')?.pause();
+      const timers = [];
+      function playWeather() {
+        timers.splice(0).forEach(clearTimeout);
+        cancelAnimationFrame(raf);
+        media.classList.remove('is-sunny');
+        if (reduceMotion) { media.classList.add('is-sunny'); return; }
+        media.classList.add('is-rain');
+        void media.offsetWidth; // Neustart der CSS-Animationen erzwingen
+        resize(); intensity = 1; fadeDur = 0; raf = requestAnimationFrame(frame);
+        timers.push(setTimeout(() => {
+          media.classList.remove('is-rain');              // Farben wärmen in 4 s auf
+          fadeStart = performance.now(); fadeDur = 3500;  // Regen lässt nach
+          timers.push(setTimeout(() => media.classList.add('is-sunny'), 2500));
+        }, 1800));
+      }
+
+      function choose(key, replay) {
+        const v = videos[key] || videos.b;
+        media.style.setProperty('--video-pos', v.pos);
+        media.style.setProperty('--sun-x', v.sunX);
+        media.style.setProperty('--sun-y', v.sunY);
+        if (!video.src.endsWith(v.src)) { video.src = v.src; if (!reduceMotion) video.play().catch(() => {}); }
+        document.querySelectorAll('.video-switch button').forEach(b => b.setAttribute('aria-pressed', b.dataset.video === key));
+        try { localStorage.setItem('heroVideo', key); } catch (e) {}
+        if (replay) playWeather();
+      }
+
+      let start = new URLSearchParams(location.search).get('video');
+      if (!videos[start]) { try { start = localStorage.getItem('heroVideo'); } catch (e) {} }
+      choose(videos[start] ? start : 'b', false);
+      playWeather();
+      document.querySelectorAll('.video-switch button').forEach(b => b.addEventListener('click', () => choose(b.dataset.video, true)));
+      addEventListener('resize', () => { if (intensity > 0) resize(); });
+      if (reduceMotion) video.pause();
+    })();
 
     // Seitenbreite ohne Scrollbalken, damit vollbreite Abschnitte exakt am Raster ausrichten
     const setPageWidth = () => document.documentElement.style.setProperty('--page-w', document.documentElement.clientWidth + 'px');
