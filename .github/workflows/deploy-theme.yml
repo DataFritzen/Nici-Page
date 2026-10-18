@@ -22,7 +22,7 @@ jobs:
         if: env.SFTP_HOST == ''
         run: echo "::warning::SFTP-Secrets sind noch nicht eingetragen – nichts hochgeladen."
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: env.SFTP_HOST != ''
 
       - name: lftp installieren
