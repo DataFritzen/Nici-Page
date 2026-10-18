@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.1.2' );
+define( 'NR_VERSION', '1.2.0' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -80,13 +80,6 @@ function nr_defaults() {
 		'offer_3_text'     => 'Endlich Vorsätze auch umsetzen – und dranbleiben, bis dein Erfolg spürbar wird.',
 		'offer_3_list'     => "Ich helfe dir, deine Ziele zu erreichen\nMit Stress & Rückschlägen umgehen\nDranbleiben im Alltag",
 
-		'change_image'     => $img . 'sunset.jpg',
-		'change_overlay'   => "Deine Klarheit.\nDein Tempo.\nDeine innere Mitte.",
-		'change_eyebrow'   => 'Ich begleite deine Veränderung',
-		'change_title'     => 'Du kannst lernen,<br>gut damit umzugehen.',
-		'change_text'      => 'Ob im Job, in Beziehungen oder in anderen Lebensbereichen – ich bin dein Coach in Sachen Klarheit, Konfliktlösung und innere Stärke.',
-		'change_teaser'    => 'Ich teile meine Erfahrung mit dir.',
-
 		'about_image'      => $img . 'portrait.jpg',
 		'about_title'      => 'Ich bin Nicole Ried.',
 		'about_lead'       => 'Ich kenne das Gefühl, festzustecken – und ich weiß, wie man wieder rauskommt. Diese Erfahrung teile ich mit dir.',
@@ -147,7 +140,6 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 		'nr_general' => 'Allgemein & Kopfzeile',
 		'nr_hero'    => 'Startbereich (oben)',
 		'nr_offers'  => 'Angebote',
-		'nr_change'  => 'Abschnitt „Veränderung“',
 		'nr_about'   => 'Über mich',
 		'nr_contact' => 'Kontakt',
 		'nr_legal'   => 'Impressum & Datenschutz',
@@ -180,13 +172,6 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 		array( 'offer_3_title', 'nr_offers', 'Angebot 3 – Titel', 'text' ),
 		array( 'offer_3_text', 'nr_offers', 'Angebot 3 – Text', 'textarea' ),
 		array( 'offer_3_list', 'nr_offers', 'Angebot 3 – Stichpunkte (einer pro Zeile)', 'textarea' ),
-
-		array( 'change_image', 'nr_change', 'Bild links', 'image' ),
-		array( 'change_overlay', 'nr_change', 'Text im Bild (eine Zeile pro Satz)', 'textarea' ),
-		array( 'change_eyebrow', 'nr_change', 'Kleine Zeile oben', 'text' ),
-		array( 'change_title', 'nr_change', 'Überschrift', 'html' ),
-		array( 'change_text', 'nr_change', 'Text', 'textarea' ),
-		array( 'change_teaser', 'nr_change', 'Teaser (Link zu „Über mich“)', 'text' ),
 
 		array( 'about_image', 'nr_about', 'Foto', 'image' ),
 		array( 'about_title', 'nr_about', 'Überschrift', 'text' ),

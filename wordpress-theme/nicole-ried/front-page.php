@@ -67,20 +67,6 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 		</div>
 	</section>
 
-	<!-- Veränderung -->
-	<section class="change">
-		<div class="change-photo">
-			<img src="<?php echo esc_url( nr( 'change_image' ) ); ?>" alt="" loading="lazy">
-			<p class="script"><?php echo implode( '<br>', array_map( 'esc_html', nr_lines( 'change_overlay' ) ) ); ?></p>
-		</div>
-		<div class="change-text reveal">
-			<p class="eyebrow"><?php echo esc_html( nr( 'change_eyebrow' ) ); ?></p>
-			<h2><?php echo nr_kses( nr( 'change_title' ) ); ?></h2>
-			<p><?php echo esc_html( nr( 'change_text' ) ); ?></p>
-			<a class="teaser" href="#ueber-mich"><span class="script"><?php echo esc_html( nr( 'change_teaser' ) ); ?></span> <svg><use href="#i-arrow"/></svg></a>
-		</div>
-	</section>
-
 	<!-- Über mich -->
 	<section class="about" id="ueber-mich">
 		<div class="wrap about-grid">
