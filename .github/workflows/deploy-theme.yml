@@ -3,7 +3,7 @@
 #   SFTP_HOST      Server aus IONOS → Hosting → SFTP & SSH
 #   SFTP_USER      SFTP-Benutzername aus dem IONOS-Kundenbereich
 #   SFTP_PASSWORD  zugehöriges Passwort
-#   SFTP_PATH      Zielordner des Themes, bei IONOS: /public/wp-content/themes/nicole-ried
+# Der Theme-Ordner auf dem Server wird automatisch gesucht (ein Secret SFTP_PATH wird nicht mehr verwendet).
 name: Theme zu WordPress hochladen
 
 on:
@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SFTP_HOST: ${{ secrets.SFTP_HOST }}
+      SFTP_USER: ${{ secrets.SFTP_USER }}
+      SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
     steps:
       - name: Abbrechen, solange die Zugangsdaten fehlen
         if: env.SFTP_HOST == ''
@@ -29,20 +31,33 @@ jobs:
         if: env.SFTP_HOST != ''
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
+      - name: Theme-Ordner auf dem Server finden
+        if: env.SFTP_HOST != ''
+        run: |
+          sftp() { lftp -u "$SFTP_USER,$SFTP_PASSWORD" "sftp://$SFTP_HOST" -e "set sftp:auto-confirm yes; set net:max-retries 2; $1; bye"; }
+          echo "Startordner des SFTP-Zugangs:"; sftp "pwd; cls -1" || true
+          # Nur ein Ordner, der schon existiert und das Theme enthält, kommt als Ziel infrage.
+          # Reihenfolge: Zugang beginnt in wp-content → in public → im Webspace-Stamm.
+          for candidate in themes/nicole-ried wp-content/themes/nicole-ried public/wp-content/themes/nicole-ried; do
+            if sftp "cls -1 $candidate/style.css" >/dev/null 2>&1; then
+              echo "Theme-Ordner gefunden: $candidate"
+              echo "THEME_DIR=$candidate" >> "$GITHUB_ENV"
+              exit 0
+            fi
+          done
+          echo "::error::Kein bestehender Theme-Ordner nicole-ried gefunden – nichts hochgeladen."
+          exit 1
+
       - name: Theme hochladen
         if: env.SFTP_HOST != ''
-        env:
-          SFTP_USER: ${{ secrets.SFTP_USER }}
-          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-          SFTP_PATH: ${{ secrets.SFTP_PATH }}
         run: |
           # Sicherung: Weil --delete im Zielordner aufräumt, darf nur der Theme-Ordner das Ziel sein
-          case "$SFTP_PATH" in
-            */themes/nicole-ried) ;;
-            *) echo "::error::SFTP_PATH muss auf /themes/nicole-ried enden (ist: $SFTP_PATH)"; exit 1 ;;
+          case "$THEME_DIR" in
+            themes/nicole-ried|*/themes/nicole-ried) ;;
+            *) echo "::error::Unerwarteter Zielordner: $THEME_DIR"; exit 1 ;;
           esac
           lftp -u "$SFTP_USER,$SFTP_PASSWORD" "sftp://$SFTP_HOST" -e "
             set sftp:auto-confirm yes;
             set net:max-retries 2;
-            mirror --reverse --delete --verbose wordpress-theme/nicole-ried $SFTP_PATH;
+            mirror --reverse --delete --verbose wordpress-theme/nicole-ried $THEME_DIR;
             bye"

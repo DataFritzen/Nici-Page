@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.1.1' );
+define( 'NR_VERSION', '1.1.2' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
