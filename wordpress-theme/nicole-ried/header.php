@@ -30,8 +30,8 @@ $cta  = is_front_page() ? '#kontakt' : home_url( '/#kontakt' );
 		<a class="brand" href="<?php echo esc_url( $home ); ?>" aria-label="Nicole Ried – zur Startseite">
 			<!-- Logo „Balance Circle“, zeichnet sich beim Laden ein -->
 			<svg class="logo-anim" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
-				<path class="d1" pathLength="1" stroke="url(#gold)" stroke-width="2.4" d="M88 94A46 46 0 1 1 104 52"/>
-				<path class="d2" pathLength="1" stroke="url(#gold)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 99 40"/>
+				<path class="d1" pathLength="1" stroke="url(#gold)" stroke-width="2.4" d="M95.2 89.6A46 46 0 1 1 95.2 30.4"/>
+				<path class="d2" pathLength="1" stroke="url(#gold)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 87.6 27.1"/>
 				<path class="d3" pathLength="1" stroke="currentColor" stroke-width="1.1" d="M36 81V41"/>
 				<path class="d4" pathLength="1" stroke="currentColor" stroke-width="2.8" d="M36.5 41 61.5 81"/>
 				<path class="d5" pathLength="1" stroke="currentColor" stroke-width="1.1" d="M62 81V41"/>

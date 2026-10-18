@@ -16,8 +16,8 @@
   const T = {
     start: 4.0,                 // vorher ziehen die wilden Wolken über den Berg
     rate: .5,                   // halbe Geschwindigkeit: ruhiger, kein Zeitraffer-Gefühl
-    rainEnd: 5.0, clearEnd: 6.6, // bis 5,0 s Regen, bis 6,6 s klart es auf
-    pathStart: 6.6, pathEnd: 12.4
+    rainEnd: 4.6, clearEnd: 6.0,  // bis 4,6 s Regen, bis 6,0 s klart es auf
+    pathStart: 5.0, pathEnd: 12.4 // die Linie startet, sobald die Sonne über dem Horizont erscheint
   };
   // Punkte in Video-Koordinaten, von unten nach oben: Konflikte klären, Innerlich wachsen, Ziele erreichen
   const VIDEO = { w: 1280, h: 720, posX: .3, posY: .5 };   // muss zu object-position: 30% 50% passen
@@ -54,38 +54,64 @@
   const clamp = x => Math.min(1, Math.max(0, x));
   const ease = x => x * x * (3 - 2 * x);
 
-  // Regen als Canvas
-  let drops = [], w = 0, h = 0;
+  // Regen als Canvas: drei Tiefenebenen, Böen, auslaufende Schweife und Spritzer am Boden
+  const LAYERS = [   // fern → nah
+    { share: .5,  len: [6, 12],  speed: [5, 7],   width: .6, alpha: [.10, .22] },
+    { share: .35, len: [14, 24], speed: [9, 12],  width: .9, alpha: [.18, .32] },
+    { share: .15, len: [28, 46], speed: [16, 22], width: 1.4, alpha: [.22, .40] }
+  ];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  let drops = [], splashes = [], w = 0, h = 0, wind = .18, frameNo = 0;
   function resize() {
     const r = media.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
     w = r.width; h = r.height;
     canvas.width = w * dpr; canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drops = Array.from({ length: Math.round(w * h / 2600) }, () => newDrop(true));
+    const total = Math.round(w * h / 1400);
+    drops = [];
+    LAYERS.forEach(L => { for (let i = 0; i < total * L.share; i++) drops.push(newDrop(L, true)); });
   }
-  function newDrop(anywhere) {
-    return { x: Math.random() * (w + 100), y: anywhere ? Math.random() * h : -30,
-             len: 12 + Math.random() * 20, speed: 9 + Math.random() * 8, a: .15 + Math.random() * .35 };
+  function newDrop(L, anywhere) {
+    return { L, x: rnd(-40, w + 120), y: anywhere ? rnd(-50, h) : rnd(-60, -10),
+             len: rnd(...L.len), speed: rnd(...L.speed), a: rnd(...L.alpha),
+             ground: h * rnd(.72, 1.02) };   // nahe Tropfen treffen weiter unten auf
   }
   function drawRain(intensity) {
     ctx.clearRect(0, 0, w, h);
-    if (intensity <= 0) return;
-    ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+    if (intensity <= 0) { splashes = []; return; }
+    frameNo++;
+    wind = .16 + Math.sin(frameNo / 90) * .06;   // leichte Böen
+    ctx.lineCap = 'round';
     for (const d of drops) {
-      ctx.strokeStyle = 'rgba(210,222,235,' + (d.a * intensity) + ')';
-      ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * .22, d.y + d.len); ctx.stroke();
-      d.x -= d.speed * .22; d.y += d.speed;
-      if (d.y > h) Object.assign(d, newDrop(false));
+      const dx = d.len * wind, a = d.a * intensity;
+      // Schweif blass, Kopf etwas heller – wirkt wie Bewegungsunschärfe
+      ctx.lineWidth = d.L.width;
+      ctx.strokeStyle = 'rgba(205,215,228,' + (a * .45) + ')';
+      ctx.beginPath(); ctx.moveTo(d.x + dx, d.y - d.len); ctx.lineTo(d.x + dx * .4, d.y - d.len * .4); ctx.stroke();
+      ctx.strokeStyle = 'rgba(225,232,242,' + a + ')';
+      ctx.beginPath(); ctx.moveTo(d.x + dx * .4, d.y - d.len * .4); ctx.lineTo(d.x, d.y); ctx.stroke();
+      d.x -= d.speed * wind; d.y += d.speed;
+      if (d.y > d.ground) {
+        if (d.L.width > .8 && Math.random() < .5) splashes.push({ x: d.x, y: d.y, r: 0, a: a * 1.4 });
+        Object.assign(d, newDrop(d.L, false));
+      }
+    }
+    // Spritzer: kleine, flache Ringe, die sich ausbreiten und verblassen
+    ctx.lineWidth = .8;
+    splashes = splashes.filter(s => (s.r += .45, s.a *= .9) > .02);
+    for (const s of splashes) {
+      ctx.strokeStyle = 'rgba(220,228,238,' + s.a + ')';
+      ctx.beginPath(); ctx.ellipse(s.x, s.y, s.r * 2.2, s.r * .55, 0, Math.PI, 2 * Math.PI); ctx.stroke();
     }
   }
 
   function render(t) {
     const storm = 1 - ease(clamp((t - T.rainEnd) / (T.clearEnd - T.rainEnd)));   // 1 = Regen, 0 = Sonne
     video.style.filter = storm > 0
-      ? `grayscale(${.7 * storm}) saturate(${1 - .55 * storm}) brightness(${1 - .45 * storm}) contrast(${1 - .08 * storm})`
+      ? `grayscale(${.6 * storm}) saturate(${1 - .5 * storm}) brightness(${1 - .4 * storm}) contrast(${1 - .12 * storm}) blur(${.8 * storm}px)`
       : '';
     overcast.style.opacity = storm;
-    sunglow.style.opacity = ease(clamp((t - T.rainEnd - .4) / 1.6));
+    sunglow.style.opacity = ease(clamp((t - T.pathStart) / 1.6));
     drawRain(storm);
     const p = clamp((t - T.pathStart) / (T.pathEnd - T.pathStart));
     path.style.strokeDashoffset = 1 - p;

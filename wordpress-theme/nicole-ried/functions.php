@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.0.0' );
+define( 'NR_VERSION', '1.1.0' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -57,13 +57,13 @@ add_action( 'wp_head', function () {
 function nr_defaults() {
 	$img = get_theme_file_uri( 'assets/img/' );
 	return array(
-		'seo_title'        => 'Nicole Ried – Coaching · Mediation · Zielerreichung',
-		'seo_description'  => 'Coaching, Mediation und Zielerreichung mit Nicole Ried: Konflikte klären, innerlich wachsen, Ziele erreichen.',
-		'brand_sub'        => 'COACHING · MEDIATION · ZIELERREICHUNG',
+		'seo_title'        => 'Nicole Ried – Coaching · Mediation · Resilienz',
+		'seo_description'  => 'Keinen Bock auf Stress? Coaching, Mediation und Resilienz mit Nicole Ried: Konflikte klären, innerlich wachsen, Ziele erreichen.',
+		'brand_sub'        => 'COACHING · MEDIATION · RESILIENZ',
 		'nav_cta'          => 'Lass uns sprechen',
 
-		'hero_kicker'      => 'Du hast einen Plan?',
-		'hero_title'       => 'Diesmal<br><em>packst</em> du es!',
+		'hero_kicker'      => '',
+		'hero_title'       => 'Keinen Bock<br><em>auf</em> Stress?',
 		'hero_lead'        => 'Mit Yoga, Achtsamkeit und neuen Perspektiven <strong>zeige ich dir, wie es geht</strong> – Schritt für Schritt, auf deinem ganz persönlichen Weg.',
 		'hero_button'      => 'Einfach mal drüber reden',
 		'hero_claim_1'     => 'Konflikte klären',
@@ -76,7 +76,7 @@ function nr_defaults() {
 		'offer_2_title'    => 'Mediation',
 		'offer_2_text'     => 'Lernen, mit schwierigen Situationen umzugehen – und den Überblick zu behalten.',
 		'offer_2_list'     => "Konflikte im Team & Job\nFamilie & Partnerschaft\nEltern & Kinder",
-		'offer_3_title'    => 'Zielerreichung',
+		'offer_3_title'    => 'Resilienz',
 		'offer_3_text'     => 'Endlich Vorsätze auch umsetzen – und dranbleiben, bis dein Erfolg spürbar wird.',
 		'offer_3_list'     => "Ich helfe dir, deine Ziele zu erreichen\nMit Stress & Rückschlägen umgehen\nDranbleiben im Alltag",
 
@@ -163,7 +163,7 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 		array( 'brand_sub', 'nr_general', 'Untertitel unter dem Namen', 'text' ),
 		array( 'nav_cta', 'nr_general', 'Button in der Kopfzeile', 'text' ),
 
-		array( 'hero_kicker', 'nr_hero', 'Kleine Zeile über der Überschrift', 'text' ),
+		array( 'hero_kicker', 'nr_hero', 'Kleine Zeile über der Überschrift (leer = ausgeblendet)', 'text' ),
 		array( 'hero_title', 'nr_hero', 'Überschrift', 'html' ),
 		array( 'hero_lead', 'nr_hero', 'Text unter der Überschrift (<strong>…</strong> = grün hervorgehoben)', 'html' ),
 		array( 'hero_button', 'nr_hero', 'Button', 'text' ),

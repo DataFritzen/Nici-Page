@@ -20,7 +20,9 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 	<section class="hero" id="start">
 		<div class="wrap hero-grid">
 			<div class="hero-text">
-				<p class="hero-kicker"><?php echo esc_html( nr( 'hero_kicker' ) ); ?></p>
+				<?php if ( nr( 'hero_kicker' ) ) : ?>
+					<p class="hero-kicker"><?php echo esc_html( nr( 'hero_kicker' ) ); ?></p>
+				<?php endif; ?>
 				<h1><?php echo nr_kses( nr( 'hero_title' ) ); ?></h1>
 				<p class="hero-lead"><?php echo nr_kses( nr( 'hero_lead' ) ); ?></p>
 				<div><a class="btn btn-sage" href="#kontakt"><?php echo esc_html( nr( 'hero_button' ) ); ?> <svg><use href="#i-arrow"/></svg></a></div>

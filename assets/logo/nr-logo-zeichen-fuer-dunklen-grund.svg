@@ -4,8 +4,8 @@
     </linearGradient></defs>
   
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path stroke="url(#gold)" stroke-width="2.4" d="M88 94A46 46 0 1 1 104 52"/>
-    <path stroke="url(#gold)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 99 40"/>
+    <path stroke="url(#gold)" stroke-width="2.4" d="M95.2 89.6A46 46 0 1 1 95.2 30.4"/>
+    <path stroke="url(#gold)" stroke-width=".9" opacity=".6" d="M30 30A43 43 0 0 1 87.6 27.1"/>
     <path stroke="#f4efe4" stroke-width="1.1" d="M36 41v40M62 81V41"/>
     <path stroke="#f4efe4" stroke-width="2.8" d="M36.5 41 61.5 81"/>
     <path stroke="#f4efe4" stroke-width="1.8" d="M62 41h7a10 10 0 0 1 0 20h-7"/>
