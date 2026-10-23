@@ -56,7 +56,7 @@
 
     /* Header */
     .site-header { position: sticky; top: 0; z-index: 50; background: var(--ink); color: var(--cream); }
-    .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 76px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; padding-block: 12px; }
     .brand { display: flex; align-items: center; gap: 18px; text-decoration: none; }
     .brand svg { width: 48px; height: 48px; color: var(--cream); flex: none; }
     /* Logo zeichnet sich ein: erst der Kreis, dann N, dann R mit ausschwingendem Bein */
@@ -82,7 +82,7 @@
       width: 0; min-width: 100%; margin-top: 4px; white-space: nowrap;
       font-size: 7px; letter-spacing: .07em; text-align: justify; text-align-last: justify; opacity: .75;
     }
-    .nav-cta { padding: 9px 18px; font-size: 13px; flex: none; }
+    .nav-cta { padding: 9px 18px; font-size: 13px; flex: 0 1 340px; min-width: 0; text-align: center; text-wrap: balance; }
 
     /* Hero: links Text, rechts Video mit Lichtweg */
     .hero { position: relative; background: var(--ink); color: var(--cream); overflow: hidden; }
@@ -266,7 +266,7 @@
           <span class="brand-sub">COACHING · MEDIATION · RESILIENZ</span>
         </span>
       </a>
-      <a class="btn btn-sage nav-cta" href="kennenlernen.html">Lern mich kennen <svg><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-sage nav-cta" href="kennenlernen.html">Lass uns herausfinden, was möglich ist <svg><use href="#i-arrow"/></svg></a>
     </div>
   </header>
 

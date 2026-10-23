@@ -10,25 +10,9 @@ $email = sanitize_email( nr( 'contact_email' ) );
 $contact_href = $email ? 'mailto:' . $email . '?subject=' . rawurlencode( 'Ein erstes Gespräch' ) : home_url( '/#kontakt' );
 $imprint = nr_page_url( 'page_imprint', 'impressum' );
 $privacy = nr_page_url( 'page_privacy', 'datenschutz' );
+get_header();
 ?>
-<!doctype html>
-<html <?php language_attributes(); ?>>
-<head>
-  <meta charset="<?php bloginfo( 'charset' ); ?>">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Nicole kennenlernen. Eine erste Begegnung und ein neuer Blick auf das, was dich gerade beschäftigt.">
-  <?php wp_head(); ?>
-</head>
-<body <?php body_class( 'nr-kennenlernen' ); ?>>
-  <?php wp_body_open(); ?>
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
-  <header class="header">
-    <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Nicole Ried, Startseite">
-      <img src="<?php echo esc_url( get_theme_file_uri( 'assets/logo/nr-logo-zeichen-fuer-hellen-grund.svg' ) ); ?>" width="48" height="48" alt="">
-      <span>Nicole Ried<small>Coaching · Mediation · Resilienz</small></span>
-    </a>
-    <nav aria-label="Seitennavigation"><a class="nav-current" href="#stimme" aria-current="page">Mich kennenlernen</a><a href="#kontakt">Lass uns sprechen <span aria-hidden="true">↗</span></a></nav>
-  </header>
 
   <main id="inhalt">
     <section class="voice" id="stimme" aria-labelledby="voice-title">

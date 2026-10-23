@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.4.0' );
+define( 'NR_VERSION', '1.4.2' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -25,6 +25,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'nr-fonts', get_theme_file_uri( 'assets/fonts/fonts.css' ), array(), NR_VERSION );
 	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
 		wp_enqueue_style( 'nr-kennenlernen', get_theme_file_uri( 'assets/css/kennenlernen.css' ), array( 'nr-fonts' ), NR_VERSION );
+		wp_enqueue_style( 'nr-kennenlernen-header', get_theme_file_uri( 'assets/css/kennenlernen-header.css' ), array( 'nr-kennenlernen' ), NR_VERSION );
 		wp_enqueue_script( 'nr-kennenlernen', get_theme_file_uri( 'assets/js/kennenlernen.js' ), array(), NR_VERSION, array( 'in_footer' => true ) );
 		return;
 	}
@@ -65,7 +66,7 @@ function nr_defaults() {
 		'seo_title'        => 'Nicole Ried – Coaching · Mediation · Resilienz',
 		'seo_description'  => 'Keinen Bock auf Stress? Coaching, Mediation und Resilienz mit Nicole Ried: Konflikte klären, innerlich wachsen, Ziele erreichen.',
 		'brand_sub'        => 'COACHING · MEDIATION · RESILIENZ',
-		'nav_cta'          => 'Lern mich kennen',
+		'nav_cta'          => 'Lass uns herausfinden, was möglich ist',
 
 		'hero_kicker'      => '',
 		'hero_title'       => 'Keinen Bock<br><em>auf</em> Stress?',
@@ -144,6 +145,12 @@ add_filter( 'wp_robots', function ( $robots ) {
 	}
 	return $robots;
 } );
+
+add_action( 'wp_head', function () {
+	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
+		echo '<meta name="description" content="Nicole kennenlernen. Eine erste Begegnung und ein neuer Blick auf das, was dich gerade beschäftigt.">' . "\n";
+	}
+}, 1 );
 
 /* ------------------------------------------------------------------ *
  * Customizer
