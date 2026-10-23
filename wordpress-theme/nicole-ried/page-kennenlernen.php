@@ -24,7 +24,7 @@ $privacy = nr_page_url( 'page_privacy', 'datenschutz' );
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <header class="header">
     <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Nicole Ried, Startseite">
-      <img src="<?php echo esc_url( get_theme_file_uri( 'assets/logo/favicon.svg' ) ); ?>" width="48" height="48" alt="">
+      <img src="<?php echo esc_url( get_theme_file_uri( 'assets/logo/nr-logo-zeichen-fuer-hellen-grund.svg' ) ); ?>" width="48" height="48" alt="">
       <span>Nicole Ried<small>Coaching · Mediation · Resilienz</small></span>
     </a>
     <nav aria-label="Seitennavigation"><a class="nav-current" href="#stimme" aria-current="page">Mich kennenlernen</a><a href="#kontakt">Lass uns sprechen <span aria-hidden="true">↗</span></a></nav>
