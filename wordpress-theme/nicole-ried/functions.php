@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.4.2' );
+define( 'NR_VERSION', '1.5.0' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -23,6 +23,12 @@ add_action( 'after_setup_theme', function () {
  * ------------------------------------------------------------------ */
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'nr-fonts', get_theme_file_uri( 'assets/fonts/fonts.css' ), array(), NR_VERSION );
+	if ( nr_is_orientation() ) {
+		wp_enqueue_style( 'nr-orientierung', get_theme_file_uri( 'assets/orientierung/style.css' ), array( 'nr-fonts' ), NR_VERSION );
+		wp_enqueue_style( 'nr-kennenlernen-header', get_theme_file_uri( 'assets/css/kennenlernen-header.css' ), array( 'nr-orientierung' ), NR_VERSION );
+		wp_enqueue_script( 'nr-orientierung', get_theme_file_uri( 'assets/orientierung/app.mjs' ), array(), NR_VERSION, array( 'in_footer' => true ) );
+		return;
+	}
 	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
 		wp_enqueue_style( 'nr-kennenlernen', get_theme_file_uri( 'assets/css/kennenlernen.css' ), array( 'nr-fonts' ), NR_VERSION );
 		wp_enqueue_style( 'nr-kennenlernen-header', get_theme_file_uri( 'assets/css/kennenlernen-header.css' ), array( 'nr-kennenlernen' ), NR_VERSION );
@@ -30,8 +36,17 @@ add_action( 'wp_enqueue_scripts', function () {
 		return;
 	}
 	wp_enqueue_style( 'nr-style', get_stylesheet_uri(), array( 'nr-fonts' ), NR_VERSION );
+	if ( is_front_page() ) {
+		wp_enqueue_style( 'nr-orientierung-entry', get_theme_file_uri( 'assets/css/orientierung-entry.css' ), array( 'nr-style' ), NR_VERSION );
+	}
 	wp_enqueue_script( 'nr-site', get_theme_file_uri( 'assets/js/site.js' ), array(), NR_VERSION, array( 'in_footer' => true ) );
 } );
+
+add_filter( 'script_loader_tag', function ( $tag, $handle, $src ) {
+	return 'nr-orientierung' === $handle
+		? wp_get_script_tag( array( 'type' => 'module', 'src' => $src, 'id' => $handle . '-js' ) )
+		: $tag;
+}, 10, 3 );
 
 // Unnötigen WordPress-Ballast im Frontend entfernen
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -138,15 +153,28 @@ function nr_discovery_url() {
 		: home_url( '/#ueber-mich' );
 }
 
+function nr_is_orientation() {
+	return is_page( 'wo-fangen-wir-an' ) || is_page_template( 'page-wo-fangen-wir-an.php' );
+}
+
+/** Do not expose an entry link until the WordPress page is published. */
+function nr_orientation_url() {
+	$page = get_page_by_path( 'wo-fangen-wir-an' );
+	return $page && 'publish' === get_post_status( $page ) ? get_permalink( $page ) : '';
+}
+
 // Der Kennenlern-Entwurf bleibt bis zu den finalen Aufnahmen aus dem Suchindex.
 add_filter( 'wp_robots', function ( $robots ) {
-	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
+	if ( nr_is_orientation() || is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
 		$robots['noindex'] = true;
 	}
 	return $robots;
 } );
 
 add_action( 'wp_head', function () {
+	if ( nr_is_orientation() ) {
+		echo '<meta name="description" content="Was beschäftigt dich gerade? Finde Schritt für Schritt einen möglichen Anfang mit Nicole Ried.">' . "\n";
+	}
 	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
 		echo '<meta name="description" content="Nicole kennenlernen. Eine erste Begegnung und ein neuer Blick auf das, was dich gerade beschäftigt.">' . "\n";
 	}

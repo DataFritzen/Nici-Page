@@ -61,7 +61,8 @@ get_header();
         <button class="thought thought-e" data-topic="anfangen" aria-haspopup="dialog"><span class="thought-category">Losgehen</span>Ich weiß es doch.<br>Warum fange ich nicht an?<span class="thought-plus" aria-hidden="true">+</span></button>
         <button class="thought thought-f" data-topic="veraenderung" aria-haspopup="dialog"><span class="thought-category">Veränderung</span>Und wenn alles<br>anders kommt?<span class="thought-plus" aria-hidden="true">+</span></button>
       </div>
-      <div class="thought-outro"><p>Du musst nicht alles auf einmal lösen.</p><a href="#sortieren">Wir finden einen Anfang. <span aria-hidden="true">↓</span></a></div>
+      <?php $orientation = nr_orientation_url(); ?>
+      <div class="thought-outro"><p>Du musst nicht alles auf einmal lösen.</p><?php if ( $orientation ) : ?><a href="<?php echo esc_url( $orientation ); ?>">Wo fangen wir an? <span aria-hidden="true">↗</span></a><?php else : ?><a href="#sortieren">Wir finden einen Anfang. <span aria-hidden="true">↓</span></a><?php endif; ?></div>
     </section>
 
     <section class="order" id="sortieren" aria-labelledby="order-title">

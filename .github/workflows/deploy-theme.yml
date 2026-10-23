@@ -31,6 +31,10 @@ jobs:
         if: env.SFTP_HOST != ''
         run: find wordpress-theme/nicole-ried -name '*.php' -print0 | xargs -0 -n1 php -l
 
+      - name: Fragenweg prüfen
+        if: env.SFTP_HOST != ''
+        run: node --test tests/orientierung.test.mjs
+
       - name: lftp installieren
         if: env.SFTP_HOST != ''
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp

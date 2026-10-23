@@ -67,6 +67,16 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 		</div>
 	</section>
 
+	<?php $orientation = nr_orientation_url(); ?>
+	<?php if ( $orientation ) : ?>
+	<section class="orientation-entry" aria-labelledby="orientation-entry-title">
+		<div class="wrap orientation-entry-inner">
+			<div><p class="eyebrow">Ein Anfang reicht.</p><h2 id="orientation-entry-title">Wo fangen wir <em>an?</em></h2></div>
+			<div class="orientation-entry-copy"><p>Vielleicht ist gerade vieles auf einmal da. Du musst es noch nicht in die richtigen Worte bringen.</p><a class="orientation-entry-link" href="<?php echo esc_url( $orientation ); ?>">Meinen Anfang finden <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<!-- Über mich -->
 	<section class="about" id="ueber-mich">
 		<div class="wrap about-grid">

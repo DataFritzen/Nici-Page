@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "title": "Wo fangen wir an?",
+  "start": "sicherheit",
+  "nodes": {
+    "sicherheit": {
+      "label": "Zuerst du",
+      "title": "Fühlst du dich in der betreffenden Situation sicher?",
+      "description": "Gemeint sind Bedrohung, Gewalt oder die Sorge, dass dir jemand etwas antut.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "thema" },
+        { "id": "nein", "label": "Nein", "next": "result:unterstuetzung" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:unterstuetzung" }
+      ]
+    },
+    "thema": {
+      "label": "Dein Thema",
+      "title": "Worum geht es dabei am ehesten?",
+      "description": "Es muss noch nicht ganz genau passen.",
+      "layout": "topics",
+      "options": [
+        { "id": "beziehung", "label": "Eine Beziehung oder ein Konflikt", "next": "grenzen" },
+        { "id": "entscheidung", "label": "Eine Entscheidung oder meine Richtung", "next": "entscheidung" },
+        { "id": "belastung", "label": "Stress, Belastung oder Veränderung", "next": "entlastung" },
+        { "id": "festgefahren", "label": "Ich stecke fest oder drehe mich im Kreis", "next": "perspektive" },
+        { "id": "offen", "label": "Ich kann es noch nicht einordnen", "next": "offen_belastung" }
+      ]
+    },
+    "grenzen": {
+      "label": "Dein Raum",
+      "title": "Geht es vor allem darum, deine eigenen Bedürfnisse oder Grenzen klarer auszudrücken?",
+      "description": "Zum Beispiel einen Wunsch auszusprechen oder für dich einzustehen.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "gespraech", "evidence": "Deine eigenen Bedürfnisse und Grenzen stehen für dich im Mittelpunkt." },
+        { "id": "nein", "label": "Nein", "next": "konflikt" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "konflikt" }
+      ]
+    },
+    "gespraech": {
+      "label": "Deine Worte",
+      "title": "Wäre es hilfreich, ein konkretes Gespräch oder ein Nein vorzubereiten?",
+      "description": "Dabei kann es auch erst einmal um Worte gehen, die du für dich selbst finden möchtest.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "result:grenzen", "evidence": "Du möchtest ein konkretes Gespräch oder ein Nein vorbereiten." },
+        { "id": "nein", "label": "Nein", "next": "perspektive" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "konflikt": {
+      "label": "Miteinander",
+      "title": "Möchtest du einen konkreten Konflikt gemeinsam mit der anderen Person klären?",
+      "description": "Gemeinsam heißt: Beide Sichtweisen bekommen Raum.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "freiwillig", "evidence": "Du möchtest einen konkreten Konflikt gemeinsam klären." },
+        { "id": "nein", "label": "Nein", "next": "perspektive" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "freiwillig": {
+      "label": "Die Bereitschaft",
+      "title": "Sind beide Seiten bereit, freiwillig an einer gemeinsamen Klärung teilzunehmen?",
+      "description": "Du musst niemanden davon überzeugen. Wenn du es noch nicht weißt, ist das eine eigene Antwort.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "ohne_druck", "evidence": "Nach deinen Angaben sind beide Seiten zu einer freiwilligen Klärung bereit." },
+        { "id": "nein", "label": "Nein", "next": "gespraech" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "ohne_druck": {
+      "label": "Auf Augenhöhe",
+      "title": "Können beide Seiten ihre Sicht frei und ohne Druck äußern?",
+      "description": "Wenn du das nicht einschätzen kannst, klären wir lieber zuerst den Rahmen.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "result:mediation", "evidence": "Du schätzt den Rahmen für ein freies Gespräch als gegeben ein." },
+        { "id": "nein", "label": "Nein", "next": "result:klaerung" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "entscheidung": {
+      "label": "Deine Möglichkeiten",
+      "title": "Stehst du vor einer konkreten Entscheidung zwischen mehreren Möglichkeiten?",
+      "description": "Das kann eine kleine Alltagsentscheidung oder eine größere Veränderung sein.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "werte", "evidence": "Du stehst vor einer konkreten Entscheidung mit mehreren Möglichkeiten." },
+        { "id": "nein", "label": "Nein", "next": "perspektive" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "perspektive" }
+      ]
+    },
+    "werte": {
+      "label": "Was dir wichtig ist",
+      "title": "Möchtest du herausfinden, was dir bei dieser Entscheidung wirklich wichtig ist?",
+      "description": "Auch Erwartungen von anderen und deine eigenen Wünsche können dabei eine Rolle spielen.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "result:entscheidung", "evidence": "Du möchtest deine eigenen Wünsche und Werte in der Entscheidung besser erkennen." },
+        { "id": "nein", "label": "Nein", "next": "perspektive" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "entlastung": {
+      "label": "Was dich trägt",
+      "title": "Möchtest du zuerst herausfinden, was dich im Alltag entlastet und dir Kraft gibt?",
+      "description": "Es darf zunächst um das gehen, was gerade machbar ist.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "alltag", "evidence": "Du möchtest Entlastung und neue Kraft im Alltag finden." },
+        { "id": "nein", "label": "Nein", "next": "grenzen" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "alltag": {
+      "label": "Deine Kräfte",
+      "title": "Geht es um einen bewussteren Umgang mit Belastungen und Veränderungen im Alltag?",
+      "description": "Wir schauen hier auf einen möglichen Arbeitsansatz für deinen Alltag.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "result:ressourcen", "evidence": "Du möchtest im Alltag bewusster mit Belastungen und Veränderungen umgehen." },
+        { "id": "nein", "label": "Nein", "next": "result:klaerung" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "perspektive": {
+      "label": "Ein anderer Blick",
+      "title": "Möchtest du die Situation aus einer anderen Sicht betrachten und wiederkehrende Muster verstehen?",
+      "description": "Zum Beispiel, weil du mit den bisherigen Gedanken gerade nicht weiterkommst.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "result:perspektive", "evidence": "Du möchtest andere Sichtweisen entdecken und wiederkehrende Muster besser verstehen." },
+        { "id": "nein", "label": "Nein", "next": "result:klaerung" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "offen_belastung": {
+      "label": "Ein erstes Sortieren",
+      "title": "Steht gerade eine starke Belastung im Vordergrund?",
+      "description": "Du brauchst das noch nicht genauer zu benennen.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "entlastung" },
+        { "id": "nein", "label": "Nein", "next": "offen_entscheidung" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    },
+    "offen_entscheidung": {
+      "label": "Eine Richtung finden",
+      "title": "Geht es eher um eine anstehende Entscheidung?",
+      "description": "Es ist auch in Ordnung, wenn sich noch keine Richtung zeigt.",
+      "options": [
+        { "id": "ja", "label": "Ja", "next": "entscheidung" },
+        { "id": "nein", "label": "Nein", "next": "perspektive" },
+        { "id": "unsicher", "label": "Nicht sicher", "next": "result:klaerung" }
+      ]
+    }
+  },
+  "results": {
+    "perspektive": {
+      "kind": "method", "number": "01", "label": "Perspektivwechsel",
+      "title": "Ein anderer Blick könnte dein Anfang sein.",
+      "description": "Ein möglicher Ansatz wäre, gewohnte Deutungen und wiederkehrende Muster gemeinsam anzuschauen. Unterschiedliche Blickwinkel können sichtbar machen, wo sich neue Möglichkeiten öffnen.",
+      "question": "Wenn eine gute Freundin auf deine Situation schauen würde: Welche Möglichkeit würde sie vielleicht sehen?",
+      "action": "Mit Nicole darüber sprechen"
+    },
+    "entscheidung": {
+      "kind": "method", "number": "02", "label": "Entscheidungsklärung",
+      "title": "Deine eigenen Maßstäbe könnten dir Richtung geben.",
+      "description": "Ein möglicher Ansatz wäre, deine Möglichkeiten, Werte und Wünsche auseinanderzuhalten. So könntest du prüfen, welche Entscheidung zu deinem Leben und deinen Prioritäten passt.",
+      "question": "Was soll bei dieser Entscheidung auf keinen Fall zu kurz kommen?",
+      "action": "Mit Nicole darüber sprechen"
+    },
+    "grenzen": {
+      "kind": "method", "number": "03", "label": "Grenzen & Kommunikation",
+      "title": "Wir könnten bei deinen Grenzen anfangen.",
+      "description": "Ein möglicher Ansatz wäre, deine Bedürfnisse und Grenzen genauer herauszuarbeiten und Worte dafür zu finden. Ein konkretes Gespräch ließe sich zunächst in Ruhe vorbereiten.",
+      "question": "Welchen Wunsch möchtest du einmal in einem klaren Satz aussprechen?",
+      "action": "Mit Nicole darüber sprechen"
+    },
+    "ressourcen": {
+      "kind": "method", "number": "04", "label": "Ressourcen & Resilienz",
+      "title": "Wir könnten schauen, was dich wieder trägt.",
+      "description": "Ein möglicher Ansatz wäre, deine vorhandenen Kraftquellen und Grenzen im Alltag anzuschauen. Daraus könnten kleine, machbare Veränderungen entstehen, die du selbst ausprobieren möchtest.",
+      "question": "Was hat dir in einer ähnlichen Situation schon einmal gutgetan?",
+      "action": "Mit Nicole darüber sprechen"
+    },
+    "mediation": {
+      "kind": "method", "number": "05", "label": "Mediation",
+      "title": "Eine gemeinsame Klärung könnte ein Weg sein.",
+      "description": "Eine Mediation könnte Raum für die unterschiedlichen Sichtweisen und eigene Vereinbarungen geben. Ob der Rahmen dafür tatsächlich passt, muss vorab persönlich mit allen Beteiligten geklärt werden.",
+      "question": "Welches gemeinsame Thema möchtet ihr klären, unabhängig davon, wer gerade recht hat?",
+      "action": "Mit Nicole den Rahmen klären"
+    },
+    "klaerung": {
+      "kind": "clarification", "label": "Erst gemeinsam sortieren",
+      "title": "Es darf noch offen sein, wo wir anfangen.",
+      "description": "Aus deinen Antworten ergibt sich noch kein eindeutiger Arbeitsansatz. Ein persönliches Klärungsgespräch könnte helfen, dein Anliegen und einen passenden nächsten Schritt genauer zu verstehen.",
+      "question": "Was wäre für dich hilfreich zu verstehen, bevor du einen nächsten Schritt gehst?",
+      "action": "Gemeinsam sortieren"
+    },
+    "unterstuetzung": {
+      "kind": "support", "label": "Deine Sicherheit zuerst",
+      "title": "Hier ist persönliche Unterstützung der nächste Schritt.",
+      "description": "Du hast angegeben, dass du dich nicht sicher fühlst oder das gerade nicht einschätzen kannst. Deshalb wählt dieser Fragenweg keine der fünf Methoden aus. Eine Fachberatungsstelle kann mit dir besprechen, welche Unterstützung du brauchst. Bei unmittelbarer Bedrohung suche dir unmittelbar Hilfe vor Ort.",
+      "action": "Beratungsangebote ansehen",
+      "href": "https://familienportal.de/bmbfsfj/themen/gleichstellung/frauen-vor-gewalt-schuetzen/hilfe-und-vernetzung/hilfe-und-beratung-bei-gewalt-80640"
+    }
+  }
+}
