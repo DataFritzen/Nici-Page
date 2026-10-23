@@ -3,7 +3,7 @@
  * Kopfbereich: Logo und Kontakt-Button.
  */
 $home = is_front_page() ? '#start' : home_url( '/' );
-$cta  = is_front_page() ? '#kontakt' : home_url( '/#kontakt' );
+$cta  = nr_discovery_url();
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>

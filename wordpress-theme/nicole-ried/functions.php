@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.3.0' );
+define( 'NR_VERSION', '1.4.0' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -23,6 +23,11 @@ add_action( 'after_setup_theme', function () {
  * ------------------------------------------------------------------ */
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'nr-fonts', get_theme_file_uri( 'assets/fonts/fonts.css' ), array(), NR_VERSION );
+	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
+		wp_enqueue_style( 'nr-kennenlernen', get_theme_file_uri( 'assets/css/kennenlernen.css' ), array( 'nr-fonts' ), NR_VERSION );
+		wp_enqueue_script( 'nr-kennenlernen', get_theme_file_uri( 'assets/js/kennenlernen.js' ), array(), NR_VERSION, array( 'in_footer' => true ) );
+		return;
+	}
 	wp_enqueue_style( 'nr-style', get_stylesheet_uri(), array( 'nr-fonts' ), NR_VERSION );
 	wp_enqueue_script( 'nr-site', get_theme_file_uri( 'assets/js/site.js' ), array(), NR_VERSION, array( 'in_footer' => true ) );
 } );
@@ -60,7 +65,7 @@ function nr_defaults() {
 		'seo_title'        => 'Nicole Ried – Coaching · Mediation · Resilienz',
 		'seo_description'  => 'Keinen Bock auf Stress? Coaching, Mediation und Resilienz mit Nicole Ried: Konflikte klären, innerlich wachsen, Ziele erreichen.',
 		'brand_sub'        => 'COACHING · MEDIATION · RESILIENZ',
-		'nav_cta'          => 'Lass uns sprechen',
+		'nav_cta'          => 'Lern mich kennen',
 
 		'hero_kicker'      => '',
 		'hero_title'       => 'Keinen Bock<br><em>auf</em> Stress?',
@@ -84,7 +89,7 @@ function nr_defaults() {
 		'about_title'      => 'Ich bin Nicole Ried.',
 		'about_lead'       => 'Ich kenne das Gefühl, festzustecken – und ich weiß, wie man wieder rauskommt. Diese Erfahrung teile ich mit dir.',
 		'about_text'       => "Heute begleite ich dich mit Ruhe, Erfahrung und viel Herz. Nicht als Ratgeberin von oben, sondern an deiner Seite – ehrlich, auf Augenhöhe und so lange, bis du deinen Weg allein gehst.\n\nIch habe selbst so viele schwierige Situationen gemeistert – das glaubt mir kaum jemand. Lass mich dir helfen, einen neuen Blickwinkel zu finden.",
-		'about_button'     => 'Mach mal einen Termin aus',
+		'about_button'     => 'Mehr über mich',
 
 		'contact_title'    => 'Erfolg kommt nicht von außen.<br><em>Sondern von innen.</em>',
 		'contact_intro'    => 'Vielleicht weißt du schon, was du verändern möchtest. Vielleicht möchtest du es erst herausfinden. Beides darf seinen Raum haben.',
@@ -123,6 +128,22 @@ function nr_page_url( $key, $slug ) {
 	}
 	return $id ? get_permalink( $id ) : '';
 }
+
+/** Erst auf die Unterseite verlinken, sobald sie veröffentlicht wurde. */
+function nr_discovery_url() {
+	$page = get_page_by_path( 'kennenlernen' );
+	return $page && 'publish' === get_post_status( $page )
+		? get_permalink( $page )
+		: home_url( '/#ueber-mich' );
+}
+
+// Der Kennenlern-Entwurf bleibt bis zu den finalen Aufnahmen aus dem Suchindex.
+add_filter( 'wp_robots', function ( $robots ) {
+	if ( is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ) {
+		$robots['noindex'] = true;
+	}
+	return $robots;
+} );
 
 /* ------------------------------------------------------------------ *
  * Customizer

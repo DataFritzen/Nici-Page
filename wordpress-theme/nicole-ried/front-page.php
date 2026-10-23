@@ -79,7 +79,7 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 				<?php foreach ( preg_split( '/\n\s*\n/', trim( nr( 'about_text' ) ) ) as $paragraph ) : ?>
 					<p><?php echo nl2br( esc_html( trim( $paragraph ) ) ); ?></p>
 				<?php endforeach; ?>
-				<a class="btn btn-outline" href="#kontakt"><?php echo esc_html( nr( 'about_button' ) ); ?> <svg><use href="#i-arrow"/></svg></a>
+				<a class="btn btn-outline" href="<?php echo esc_url( nr_discovery_url() ); ?>"><?php echo esc_html( nr( 'about_button' ) ); ?> <svg><use href="#i-arrow"/></svg></a>
 			</div>
 		</div>
 	</section>
