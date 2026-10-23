@@ -7,7 +7,7 @@ get_header();
 $offer_icons = array(
 	1 => '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M22 58c2-14 10-30 26-44"/><path d="M48 6c4 16-4 34-22 40-6-14 4-34 22-40Z"/><path d="M26 46c-8-2-14-8-14-16 8 0 14 6 14 16Z"/></svg>',
 	2 => '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="24" cy="32" r="18"/><circle cx="40" cy="32" r="18"/></svg>',
-	3 => '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 56 24 24l10 15 8-11 18 28Z"/><path d="M42 28V8"/><path d="M42 8h12l-3 4 3 4H42"/></svg>',
+	3 => '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="32" r="12"/><path d="M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M12 52l6-6M46 18l6-6"/></svg>',
 );
 $offer_ids = array( 1 => 'coaching', 2 => 'mediation', 3 => 'ziele' );
 
@@ -27,7 +27,6 @@ $tel   = preg_replace( '/[^\d+]/', '', $phone );
 				<?php if ( nr( 'hero_lead' ) ) : ?>
 					<p class="hero-lead"><?php echo nr_kses( nr( 'hero_lead' ) ); ?></p>
 				<?php endif; ?>
-				<div><a class="btn btn-sage" href="#kontakt"><?php echo esc_html( nr( 'hero_button' ) ); ?> <svg><use href="#i-arrow"/></svg></a></div>
 			</div>
 			<div class="hero-media">
 				<!-- Hintergrundvideo: Mixkit „Silhouette of the mountain and the sunrise“ (Mixkit Stock Video Free License) -->
