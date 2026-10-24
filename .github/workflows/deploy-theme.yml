@@ -31,9 +31,9 @@ jobs:
         if: env.SFTP_HOST != ''
         run: find wordpress-theme/nicole-ried -name '*.php' -print0 | xargs -0 -n1 php -l
 
-      - name: Fragenweg prüfen
+      - name: Fragenweg und Startseiten-Abfolge prüfen
         if: env.SFTP_HOST != ''
-        run: node --test tests/orientierung.test.mjs
+        run: node --test tests/orientierung.test.mjs tests/hero-intro.test.mjs
 
       - name: lftp installieren
         if: env.SFTP_HOST != ''

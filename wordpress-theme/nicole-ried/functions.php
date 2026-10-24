@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NR_VERSION', '1.5.0' );
+define( 'NR_VERSION', '1.5.1' );
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
@@ -36,9 +36,6 @@ add_action( 'wp_enqueue_scripts', function () {
 		return;
 	}
 	wp_enqueue_style( 'nr-style', get_stylesheet_uri(), array( 'nr-fonts' ), NR_VERSION );
-	if ( is_front_page() ) {
-		wp_enqueue_style( 'nr-orientierung-entry', get_theme_file_uri( 'assets/css/orientierung-entry.css' ), array( 'nr-style' ), NR_VERSION );
-	}
 	wp_enqueue_script( 'nr-site', get_theme_file_uri( 'assets/js/site.js' ), array(), NR_VERSION, array( 'in_footer' => true ) );
 } );
 
@@ -47,6 +44,12 @@ add_filter( 'script_loader_tag', function ( $tag, $handle, $src ) {
 		? wp_get_script_tag( array( 'type' => 'module', 'src' => $src, 'id' => $handle . '-js' ) )
 		: $tag;
 }, 10, 3 );
+
+add_action( 'wp_head', function () {
+	if ( is_front_page() ) {
+		echo wp_get_inline_script_tag( "document.documentElement.classList.add('nr-intro');" );
+	}
+}, 1 );
 
 // Unnötigen WordPress-Ballast im Frontend entfernen
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );

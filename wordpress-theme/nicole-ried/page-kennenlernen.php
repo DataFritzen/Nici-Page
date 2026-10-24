@@ -16,7 +16,7 @@ get_header();
 
   <main id="inhalt">
     <section class="voice" id="stimme" aria-labelledby="voice-title">
-      <div class="voice-top"><span class="eyebrow">Eine erste Begegnung</span><span class="draft-label">Entwurf 01</span></div>
+      <div class="voice-top"><span class="eyebrow">Eine erste Begegnung</span><span class="draft-label">Höre zu</span></div>
       <h1 id="voice-title">Hör erst mal<br>meine <em>Stimme.</em></h1>
       <p class="voice-intro">Bevor du mir deine Geschichte erzählst,<br>hör dir in Ruhe an, was ich dir sagen möchte.</p>
       <div class="voice-track">
@@ -61,8 +61,7 @@ get_header();
         <button class="thought thought-e" data-topic="anfangen" aria-haspopup="dialog"><span class="thought-category">Losgehen</span>Ich weiß es doch.<br>Warum fange ich nicht an?<span class="thought-plus" aria-hidden="true">+</span></button>
         <button class="thought thought-f" data-topic="veraenderung" aria-haspopup="dialog"><span class="thought-category">Veränderung</span>Und wenn alles<br>anders kommt?<span class="thought-plus" aria-hidden="true">+</span></button>
       </div>
-      <?php $orientation = nr_orientation_url(); ?>
-      <div class="thought-outro"><p>Du musst nicht alles auf einmal lösen.</p><?php if ( $orientation ) : ?><a href="<?php echo esc_url( $orientation ); ?>">Wo fangen wir an? <span aria-hidden="true">↗</span></a><?php else : ?><a href="#sortieren">Wir finden einen Anfang. <span aria-hidden="true">↓</span></a><?php endif; ?></div>
+      <div class="thought-outro"><p>Du musst nicht alles auf einmal lösen.</p></div>
     </section>
 
     <section class="order" id="sortieren" aria-labelledby="order-title">

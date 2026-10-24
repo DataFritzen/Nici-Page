@@ -1,6 +1,7 @@
 // Hero: Alles hängt an der Videozeit – Morgengrauen, Sonnenaufgang, Lichtweg und Begriffe.
 // Nach rund 4 Sekunden steht das Bild komplett; das Video läuft danach ruhig weiter und bleibt am Ende stehen.
 (function () {
+  const hero = document.querySelector('.hero');
   const media = document.querySelector('.hero-media');
   if (!media) return;   // Unterseiten ohne Hero
   const video = media.querySelector('.hero-video');
@@ -9,6 +10,48 @@
   const path = media.querySelector('.hero-path path');
   const claims = [...media.querySelectorAll('.hero-claims li')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reveal characters without changing the heading's text or its reserved layout.
+  function typeHeadline() {
+    const title = hero.querySelector('.hero-title');
+    if (!title || reduceMotion) return Promise.resolve();
+    const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    const letters = [];
+    for (const node of nodes) {
+      const fragment = document.createDocumentFragment();
+      for (const character of Array.from(node.textContent)) {
+        const letter = document.createElement('span');
+        letter.className = 'hero-letter';
+        letter.textContent = character;
+        letters.push(letter);
+        fragment.append(letter);
+      }
+      node.replaceWith(fragment);
+    }
+    title.classList.add('is-ready', 'is-typing');
+    return new Promise(resolve => {
+      const began = performance.now();
+      let visible = 0;
+      function frame(now) {
+        const count = Math.min(letters.length, Math.max(0, Math.floor((now - began - 180) / 65)));
+        if (count !== visible) {
+          if (visible) letters[visible - 1].classList.remove('is-current');
+          for (let i = visible; i < count; i++) letters[i].classList.add('is-visible');
+          if (count) letters[count - 1].classList.add('is-current');
+          visible = count;
+        }
+        if (count < letters.length) requestAnimationFrame(frame);
+        else {
+          if (visible) letters[visible - 1].classList.remove('is-current');
+          title.classList.remove('is-typing');
+          resolve();
+        }
+      }
+      requestAnimationFrame(frame);
+    });
+  }
 
   // Zeitplan in Sekunden Videozeit
   const T = {
@@ -70,9 +113,11 @@
     if (!video.paused && !video.ended) raf = requestAnimationFrame(loop);
   }
 
+  let introDone = false, metadataReady = false, started = false;
   function start() {
+    if (!introDone || !metadataReady || started) return;
+    started = true;
     if (reduceMotion) { video.currentTime = video.duration - .1; render(T.pathEnd); return; }
-    video.currentTime = T.start;
     video.playbackRate = T.rate;
     render(T.start);
     video.play().then(() => { raf = requestAnimationFrame(loop); }).catch(() => render(T.pathEnd));
@@ -80,7 +125,18 @@
   video.addEventListener('ended', () => render(T.pathEnd));   // letztes Bild bleibt stehen
   addEventListener('resize', layout);
   layout();
-  if (video.readyState >= 1) start(); else video.addEventListener('loadedmetadata', start, { once: true });
+  function prepareVideo() {
+    metadataReady = true;
+    video.currentTime = T.start;
+    render(T.start);
+    start();
+  }
+  if (video.readyState >= 1) prepareVideo(); else video.addEventListener('loadedmetadata', prepareVideo, { once: true });
+  typeHeadline().then(() => {
+    introDone = true;
+    hero.classList.add('is-intro-complete');
+    start();
+  });
 })();
 
 // Seitenbreite ohne Scrollbalken, damit vollbreite Abschnitte exakt am Raster ausrichten

@@ -4,6 +4,9 @@
  */
 $home = is_front_page() ? '#start' : home_url( '/' );
 $cta  = is_page( 'kennenlernen' ) || is_page_template( 'page-kennenlernen.php' ) ? '#gedanken' : nr_discovery_url();
+if ( is_front_page() ) {
+	$cta = nr_orientation_url() ?: nr_discovery_url();
+}
 $cta_label = nr_is_orientation() ? 'Nicole kennenlernen' : nr( 'nav_cta' );
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
@@ -44,6 +47,6 @@ $cta_label = nr_is_orientation() ? 'Nicole kennenlernen' : nr( 'nav_cta' );
 				<span class="brand-sub"><?php echo esc_html( nr( 'brand_sub' ) ); ?></span>
 			</span>
 		</a>
-		<a class="btn btn-sage nav-cta" href="<?php echo esc_url( $cta ); ?>"><?php echo esc_html( $cta_label ); ?> <svg><use href="#i-arrow"/></svg></a>
+		<a class="btn btn-sage nav-cta<?php echo is_front_page() ? ' nav-cta-question' : ''; ?>" href="<?php echo esc_url( $cta ); ?>"><span><?php if ( is_front_page() ) : ?>Wo fangen wir <em>an?</em><?php else : ?><?php echo esc_html( $cta_label ); ?><?php endif; ?></span> <svg><use href="#i-arrow"/></svg></a>
 	</div>
 </header>
